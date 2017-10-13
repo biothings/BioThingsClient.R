@@ -81,7 +81,7 @@
 }
 
 .json2df <- function(x){
-   li <- lapply(x, fromJSON, flatten=TRUE)
+   li <- lapply(x, jsonlite::fromJSON, flatten=TRUE)
    df <- plyr::rbind.fill(li)
    df
 }
