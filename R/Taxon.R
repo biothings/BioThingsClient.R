@@ -1,14 +1,18 @@
+#' @include get.R
+
 # getTaxon ----------------------------------------------------------------
 
+#' @rdname getThing-methods
+#' @exportMethod getTaxon
 setGeneric("getTaxon", signature = c("biothings"),
            function(taxonid, fields = NULL, ...,
-                    return.as = c("records", "text"), biothings) {
-  standardGeneric("getGene")
+                    return.as = c("records", "text", "data.frame"), biothings) {
+  standardGeneric("getTaxon")
 })
 
 setMethod("getTaxon", c(biothings = "BioThings"),
           function(taxonid, fields = NULL, ...,
-                   return.as = c("records", "text"), biothings) {
+                   return.as = c("records", "text", "data.frame"), biothings) {
   return.as <- match.arg(return.as)
   getThing(taxonid, "taxon", "taxon", fields, ...,
            return.as = return.as, biothings = biothings)
@@ -16,7 +20,7 @@ setMethod("getTaxon", c(biothings = "BioThings"),
 
 setMethod("getTaxon", c(biothings = "missing"),
           function(taxonid, fields = NULL, ...,
-                   return.as = c("records", "text"), biothings) {
+                   return.as = c("records", "text", "data.frame"), biothings) {
   biothings <- BioThings()
   getTaxon(taxonid, fields, ..., return.as = return.as,
            biothings = biothings)
@@ -24,10 +28,12 @@ setMethod("getTaxon", c(biothings = "missing"),
 
 # getTaxons ---------------------------------------------------------------
 
+#' @rdname getThing-methods
+#' @exportMethod getTaxons
 setGeneric("getTaxons", signature = c("biothings"),
            function(taxonids, fields = NULL, ...,
                     return.as = c("data.frame", "records", "text"), biothings) {
-  standardGeneric("getGenes")
+  standardGeneric("getTaxons")
 })
 
 setMethod("getTaxons", c(biothings = "BioThings"),
@@ -42,6 +48,6 @@ setMethod("getTaxons", c(biothings = "missing"),
           function(taxonids, fields = NULL, ...,
                    return.as = c("data.frame", "records", "text"), biothings) {
   biothings <- BioThings()
-  getTaxons(geneids, fields, ..., return.as = return.as,
+  getTaxons(taxonids, fields, ..., return.as = return.as,
             biothings = biothings)
 })

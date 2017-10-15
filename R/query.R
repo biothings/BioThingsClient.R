@@ -1,12 +1,29 @@
+#' @include BioThings.R
+
 # query -------------------------------------------------------------------
 
+#' @title query
+#' Retrieve results from the query endpoint of BioThings APIs
+#'
+#' @param q A query string
+#' @param qterms A vector of query strings
+#' @param client A BioThings client name
+#' @param ... Any parameters to pass to API
+#' @param return.as Type of return value
+#' @param biothings An S4 class BioThings object
+#' @return Returns the API result as the provided return.as type
+#' @name query
+#' @exportMethod query
+#'
+#' @examples
+#' query(q="NM_013993", client = "gene")
 setGeneric("query", signature = c("biothings"),
-           function(q, client, ..., return.as, biothings) {
+           function(q, client, ...,  return.as = "data.frame", biothings) {
   standardGeneric("query")
 })
 
 setMethod("query", c(biothings = "BioThings"),
-          function(q, client, ..., return.as, biothings) {
+          function(q, client, ...,  return.as = "data.frame", biothings) {
 
   # return.as <- match.arg(return.as)
   params <- list(...)
@@ -32,13 +49,17 @@ setMethod("query", c(biothings = "missing"),
 
 # queryMany ---------------------------------------------------------------
 
+#' @rdname query
+#' @exportMethod queryMany
 setGeneric("queryMany", signature = c("biothings"),
-           function(qterms, client, scopes = NULL, ..., return.as, biothings) {
+           function(qterms, client, scopes = NULL, ...,
+                    return.as = "data.frame", biothings) {
   standardGeneric("queryMany")
 })
 
 setMethod("queryMany", c(biothings = "BioThings"),
-          function(qterms, client, scopes = NULL, ..., return.as, biothings) {
+          function(qterms, client, scopes = NULL, ..., return.as = "data.frame",
+                   biothings) {
   # return.as <- match.arg(return.as)
   client_config <- biothings@clients[[client]]
   params <- list(...)
@@ -94,7 +115,8 @@ setMethod("queryMany", c(biothings = "BioThings"),
 })
 
 setMethod("queryMany", c(biothings = "missing"),
-          function(qterms, client, scopes = NULL, ..., return.as, biothings){
+          function(qterms, client, scopes = NULL, ..., return.as = "data.frame",
+                   biothings){
 
   biothings <- BioThings()
   # Should use callGeneric here except that callGeneric gets the variable scoping wrong for the "..." argument

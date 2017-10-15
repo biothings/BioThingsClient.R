@@ -1,9 +1,11 @@
-## myvarint utility functions
+#' @include biothings-package.R
 
+#' @keywords internal
 .collapse <- function(...) {
     paste(unlist(list(...)), sep=",", collapse=",")
 }
 
+#' @keywords internal
 .transpose.nested.list <- function(li) {
     ## Assumes that inner names of each element are the same
     if (length(li) == 0)
@@ -14,6 +16,7 @@
     res
 }
 
+#' @keywords internal
 .splitBySize <- function(x, maxsize) {
     n <- length(x)
     num.chunks <- ceiling(n / maxsize)
@@ -21,13 +24,7 @@
     unname(split(x, f))
 }
 
-.df2DF <- function(df) {
-    DF <- S4Vectors::DataFrame(df, check.names=FALSE)
-    isli <- sapply(df, is.list)
-    DF[isli] <- lapply(df[isli], as, "List")
-    DF
-}
-
+#' @keywords internal
 .pop <- function(list, item, default_value=NULL){
     if (is.null(list[[item]])){
         return(default_value)
@@ -37,6 +34,7 @@
         return(value)}
 }
 
+#' @keywords internal
 .unnest <- function(list) {
     while(any(vapply(list, is.list, TRUE))){
     list<-lapply(list, unlist, recursive=FALSE)
@@ -44,7 +42,7 @@
     }
 }
 
-
+#' @keywords internal
 .unnest.df <- function(df, recursive=TRUE) {
     reslist <-lapply(colnames(df), function(i) {
         if (is(df[[i]], "data.frame")) {
@@ -62,17 +60,14 @@
     res
 }
 
+#' @keywords internal
 .convertColumn4csv <- function(column){
   needpc <- sapply(column, is, "CharacterList")
   column[needpc] <- lapply(column[needpc], .collapse)
   column
 }
 
-.df2csv <- function(df){
-  df1 <- sapply(df, .convertColumn4csv)
-  S4Vectors::DataFrame(df1, check.names=FALSE)
-}
-
+#' @keywords internal
 .json.batch.collapse <- function(x){
     #stopifnot(all(grepl("^\\s*\\[.*\\]\\s*$", x, perl=TRUE)))
     x <- gsub(pattern="^\\s*\\[|\\]\\s*$", replacement="", x, perl=TRUE)
@@ -80,23 +75,26 @@
     paste("[", x, "]")
 }
 
+#' @keywords internal
 .json2df <- function(x){
-   li <- lapply(x, jsonlite::fromJSON, flatten=TRUE)
+   li <- lapply(x, jsonlite::fromJSON, flatten = TRUE)
    df <- plyr::rbind.fill(li)
-   df
+   as.data.frame(df, stringsAsFactors = FALSE)
 }
 
+#' @keywords internal
 .uncollapse <- function(x, sep=",") {
     x <- as.character(unlist(x))
     unlist(strsplit(x, sep, fixed=TRUE))
 }
 
-.factor2List <- function(col){
-  li <- col %>% as.character %>% strsplit(",") %>% lapply(as.numeric) %>% List
-  li
-}
-
+#' @keywords internal
 .splitCols <- function(split.list, colName){
-  lapply(sapply(split.list, function(i) strsplit(i[grepl(colName, i)], "=")),
-         function(i) tryCatch(i[[2]], error=function(e) e <- NA_integer_)) %>% as.numeric
+  lapply(sapply(split.list,
+                function(i) {
+                  strsplit(i[grepl(colName, i)], "=")
+                }),
+         function(i) {
+           tryCatch(i[[2]], error=function(e) e <- NA_integer_)
+         }) %>% as.numeric()
 }

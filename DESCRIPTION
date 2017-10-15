@@ -1,0 +1,32 @@
+Package: biothings
+Type: Package
+Title: BioThings (http://github.com/thomascjohnson/biothings)
+Description: Provides access to Biothings APIs
+Version: 0.1.0
+Author: Thomas Johnson <thomascjohnson@gmail.com>
+Maintainer: Thomas Johnson <thomascjohnson@gmail.com>
+Authors@R: c(person("Thomas", "Johnson",
+    email = "thomascjohnson@gmail.com", role = c("aut", "cre")))
+Depends:
+    R (>= 3.0.1)
+License: MIT
+LazyData: true
+Imports:
+    httr,
+    jsonlite,
+    plyr,
+    magrittr
+Suggests:
+Roxygen: list(wrap = FALSE)
+Collate: 
+    'biothings_client.R'
+    'biothings-package.R'
+    'utils.R'
+    'BioThings.R'
+    'get.R'
+    'Chemical.R'
+    'Gene.R'
+    'Taxon.R'
+    'Variant.R'
+    'query.R'
+RoxygenNote: 6.0.1
