@@ -4,7 +4,9 @@
 \alias{getThing}
 \alias{getThings}
 \alias{getChemical}
+\alias{getChem}
 \alias{getChemicals}
+\alias{getChems}
 \alias{getGene}
 \alias{getGenes}
 \alias{getTaxon}
@@ -18,20 +20,26 @@ getThings(things, client, endpoint, fields, ..., return.as, biothings)
 getChemical(chemid, fields = NULL, ..., return.as = c("records", "text"),
   biothings)
 
-getChemicals(chemids, fields = NULL, ..., return.as = c("data.frame",
-  "records", "text"), biothings)
-
-getGene(geneid, fields = c("symbol", "name", "taxid", "entrezgene"), ...,
-  return.as = c("records", "text"), biothings)
-
-getGenes(geneids, fields = c("symbol", "name", "taxid", "entrezgene"), ...,
-  return.as = c("data.frame", "records", "text"), biothings)
-
-getTaxon(taxonid, fields = NULL, ..., return.as = c("records", "text"),
+getChemical(chemid, fields = NULL, ..., return.as = c("records", "text"),
   biothings)
 
-getTaxons(taxonids, fields = NULL, ..., return.as = c("data.frame",
-  "records", "text"), biothings)
+getChemicals(chemids, fields = NULL, ..., return.as = c("records", "text",
+  "data.frame"), biothings)
+
+getChemicals(chemids, fields = NULL, ..., return.as = c("records", "text",
+  "data.frame"), biothings)
+
+getGene(geneid, fields = c("symbol", "name", "taxid", "entrezgene"), ...,
+  return.as = c("records", "text", "data.frame"), biothings)
+
+getGenes(geneids, fields = c("symbol", "name", "taxid", "entrezgene"), ...,
+  return.as = c("records", "text", "data.frame"), biothings)
+
+getTaxon(taxonid, fields = NULL, ..., return.as = c("records", "text",
+  "data.frame"), biothings)
+
+getTaxons(taxonids, fields = NULL, ..., return.as = c("records", "text",
+  "data.frame"), biothings)
 }
 \arguments{
 \item{thing}{character.}
