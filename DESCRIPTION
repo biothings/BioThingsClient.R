@@ -19,6 +19,7 @@ Imports:
     methods,
     Hmisc
 Suggests:
+    testthat
 Roxygen: list(wrap = FALSE)
 Collate: 
     'biothings_client.R'
