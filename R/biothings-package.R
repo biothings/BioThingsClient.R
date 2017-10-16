@@ -9,4 +9,10 @@
 #'   ...
 #' }
 #' @importFrom magrittr %>%
+#' @importFrom setNames stats
+#' @importFrom utils capture.output
+#' @importFrom Hmisc cut2
+#' @importFrom methods is
+#' @importFrom methods new
+#' @importFrom methods slot
 "_PACKAGE"
