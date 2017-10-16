@@ -26,7 +26,8 @@ setGeneric("query", signature = c("biothings"),
 setMethod("query", c(biothings = "BioThings"),
           function(q, client, ...,
                    return.as = c("records", "data.frame", "text"), biothings) {
-  print(return.as)
+  if (all.equal(return.as, c("records", "data.frame", "text")))
+    return.as = "records"
   # return.as <- match.arg(return.as)
   params <- list(...)
   params[['q']] <- q
@@ -64,6 +65,8 @@ setMethod("queryMany", c(biothings = "BioThings"),
                    return.as = c("records", "data.frame", "text"),
                    biothings) {
   # return.as <- match.arg(return.as)
+  if (all.equal(return.as, c("records", "data.frame", "text")))
+    return.as = "records"
   client_config <- biothings@clients[[client]]
   params <- list(...)
   vecparams <- list(q = .uncollapse(qterms))
