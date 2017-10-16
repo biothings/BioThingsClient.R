@@ -1,5 +1,6 @@
 language: r
+sudo: false
 cache: packages
 
-install:
-  - ./travis-tool.sh install_r testthat
+r_packages:
+- testthat
