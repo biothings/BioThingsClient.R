@@ -2,5 +2,4 @@ language: r
 sudo: false
 cache: packages
 
-r_packages:
-- testthat
+r_packages: testthat
