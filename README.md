@@ -19,6 +19,12 @@ getTaxon("9606")
 
 Requests for multiple ids at once can be done in this way:
 ```
-getTaxons(c("chr1:g.35367C>T", "chr7:g.55241707G>T", "chr16:g.28883241A>G""))
+getTaxons(c("9606", "10030"))
+# or
+getChemicals(c("CALDTVBHJMBRTM-UHFFFAOYSA-N", "ZKLPARSLTMPFCP-UHFFFAOYSA-N"))
+```
 
+The query endpoints of the APIs can be accessed with the query and queryMany methods:
+```
+query("drugbank.name:celecoxib", "chem")
 ```

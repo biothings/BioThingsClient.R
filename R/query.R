@@ -18,13 +18,15 @@
 #' @examples
 #' query(q="NM_013993", client = "gene")
 setGeneric("query", signature = c("biothings"),
-           function(q, client, ...,  return.as = "data.frame", biothings) {
+           function(q, client, ...,
+                    return.as = c("records", "data.frame", "text"), biothings) {
   standardGeneric("query")
 })
 
 setMethod("query", c(biothings = "BioThings"),
-          function(q, client, ...,  return.as = "data.frame", biothings) {
-
+          function(q, client, ...,
+                   return.as = c("records", "data.frame", "text"), biothings) {
+  print(return.as)
   # return.as <- match.arg(return.as)
   params <- list(...)
   params[['q']] <- q
@@ -32,11 +34,11 @@ setMethod("query", c(biothings = "BioThings"),
   res <- .request.get(biothings, client,
                       client_config[["endpoints"]][["query"]], params)
 
-  if (return.as == "data.frame"){
+  if (return.as == "data.frame") {
     return(jsonlite::fromJSON(res))
-  } else if (return.as == "text"){
+  } else if (return.as == "text") {
     return(.return.as(res, "text"))
-  } else if (return.as == "records"){
+  } else if (return.as == "records") {
     return(.return.as(res, "records"))
   }
 })
@@ -53,18 +55,19 @@ setMethod("query", c(biothings = "missing"),
 #' @exportMethod queryMany
 setGeneric("queryMany", signature = c("biothings"),
            function(qterms, client, scopes = NULL, ...,
-                    return.as = "data.frame", biothings) {
+                    return.as = c("records", "data.frame", "text"), biothings) {
   standardGeneric("queryMany")
 })
 
 setMethod("queryMany", c(biothings = "BioThings"),
-          function(qterms, client, scopes = NULL, ..., return.as = "data.frame",
+          function(qterms, client, scopes = NULL, ...,
+                   return.as = c("records", "data.frame", "text"),
                    biothings) {
   # return.as <- match.arg(return.as)
   client_config <- biothings@clients[[client]]
   params <- list(...)
-  vecparams<-list(q = .uncollapse(qterms))
-  if (exists('scopes')){
+  vecparams <- list(q = .uncollapse(qterms))
+  if (exists('scopes')) {
     params <- lapply(params, .collapse)
     params[['scopes']] <- .collapse(scopes)
     returnall <- .pop(params, 'returnall', FALSE)
@@ -89,7 +92,7 @@ setMethod("queryMany", c(biothings = "BioThings"),
     count <- as.list(table(li_query))
     li_dup <- data.frame(count[count > 1])
 
-    if (verbose){
+    if (verbose) {
       cat("Finished\n")
       if (length('li_dup') > 0) {
         sprintf('%f input query terms found dup hits:   %s', length(li_dup),
@@ -105,7 +108,7 @@ setMethod("queryMany", c(biothings = "BioThings"),
       return(list("response" = out, 'duplicates' = li_dup,
                   'missing' = li_missing))
     } else {
-      if (verbose & ((length(li_dup) >= 1) | (length(li_missing) >= 1))){
+      if (verbose & ((length(li_dup) >= 1) | (length(li_missing) >= 1))) {
         cat('Pass returnall = TRUE to return lists of duplicate or missing',
             'query terms.\n')
       }
@@ -115,7 +118,8 @@ setMethod("queryMany", c(biothings = "BioThings"),
 })
 
 setMethod("queryMany", c(biothings = "missing"),
-          function(qterms, client, scopes = NULL, ..., return.as = "data.frame",
+          function(qterms, client, scopes = NULL, ...,
+                   return.as = c("records", "data.frame", "text"),
                    biothings){
 
   biothings <- BioThings()
