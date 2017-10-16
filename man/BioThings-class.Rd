@@ -24,10 +24,7 @@ BioThings - An S4 Class to access BioThings APIs.
 }}
 
 \examples{
-biothings <- BioThings()
+biothings <- new("BioThings")
 biothings@verbose <- FALSE # default is TRUE
-
-new_clients <- biothings_clients
-biothings_custom <- BioThings(clients = new_clients, version = "0.1",
-                              verbose = FALSE, debug = FALSE)
+biothings
 }

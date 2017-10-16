@@ -9,14 +9,15 @@ Authors@R: c(person("Thomas", "Johnson",
     email = "thomascjohnson@gmail.com", role = c("aut", "cre")))
 Depends:
     R (>= 3.0.1)
-License: BSD
+License: BSD | file LICENSE
 LazyData: true
 Imports:
     httr,
     jsonlite,
     plyr,
     magrittr,
-    methods
+    methods,
+    Hmisc
 Suggests:
 Roxygen: list(wrap = FALSE)
 Collate: 

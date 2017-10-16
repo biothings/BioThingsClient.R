@@ -14,14 +14,11 @@ version <- '0.1'
 #' @export
 #'
 #' @examples
-#' biothings <- BioThings()
+#' biothings <- new("BioThings")
 #' biothings@verbose <- FALSE # default is TRUE
-#'
-#' new_clients <- biothings_clients
-#' biothings_custom <- BioThings(clients = new_clients, version = "0.1",
-#'                               verbose = FALSE, debug = FALSE)
+#' biothings
 BioThings <- setClass("BioThings",
-                      slots = list(clients = "list", version="character",
+                      slots = list(clients = "list", version = "character",
                                    verbose = "logical", debug = "logical"),
                       prototype = list(clients = biothings_clients,
                                        version = version, verbose = TRUE,

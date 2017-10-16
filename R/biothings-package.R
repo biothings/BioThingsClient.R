@@ -13,4 +13,5 @@
 #' @importFrom methods is
 #' @importFrom methods new
 #' @importFrom methods slot
+#' @importFrom stats setNames
 "_PACKAGE"

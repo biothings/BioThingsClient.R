@@ -16,11 +16,12 @@
     res
 }
 
+#' @importFrom Hmisc cut2
 #' @keywords internal
 .splitBySize <- function(x, maxsize) {
     n <- length(x)
     num.chunks <- ceiling(n / maxsize)
-    f <- Hmisc::cut2(1:n, g = num.chunks)
+    f <- cut2(1:n, g = num.chunks)
     unname(split(x, f))
 }
 
