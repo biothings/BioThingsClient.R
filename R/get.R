@@ -68,13 +68,13 @@ setMethod("getThings", signature = c(biothings = "BioThings"),
           function(things, client, endpoint, fields, ..., return.as,
                    biothings) {
   client_config <- biothings@clients[[client]]
-
+  params <- list()
   if (exists('fields')) {
     params <- list(...)
     params[['fields']] <- .collapse(fields)
     params <- lapply(params, .collapse)
   }
-  params = list()
+
   vecparams <- list(ids = .uncollapse(things))
 
   res <- .repeated.query(biothings, client,
