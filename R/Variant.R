@@ -2,7 +2,7 @@
 
 # getVariant --------------------------------------------------------------
 
-#' @rdname getThing
+#' @rdname getThing-methods
 #' @exportMethod getVariant
 setGeneric("getVariant", signature = c("biothings"),
            function(variantid, fields = NULL, ...,
@@ -28,7 +28,7 @@ setMethod("getVariant", c(biothings = "missing"),
 
 # getVariants -------------------------------------------------------------
 
-#' @rdname getThing
+#' @rdname getThing-methods
 #' @exportMethod getVariants
 setGeneric("getVariants", signature = c("biothings"),
            function(variantids, fields = NULL, ...,
