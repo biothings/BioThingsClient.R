@@ -16,14 +16,14 @@ test_that("Check that getTaxon returns appropriate type.", {
 })
 
 test_that("Check that getThings returns appropriate type.", {
-  taxons_df <-
-    getTaxons(c("9606", "10030"))
   taxons_list <-
-    getTaxons(c("9606", "10030"), return.as = "records")
+    getTaxons(c("9606", "10030"))
+  taxons_df <-
+    getTaxons(c("9606", "10030"), return.as = "data.frame")
   taxons_char <-
     getTaxons(c("9606", "10030"), return.as = "text")
 
-  expect_is(taxons_df, "data.frame")
   expect_is(taxons_list, "list")
+  expect_is(taxons_df, "data.frame")
   expect_is(taxons_char, "character")
 })

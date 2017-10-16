@@ -32,13 +32,13 @@ setMethod("getTaxon", c(biothings = "missing"),
 #' @exportMethod getTaxons
 setGeneric("getTaxons", signature = c("biothings"),
            function(taxonids, fields = NULL, ...,
-                    return.as = c("data.frame", "records", "text"), biothings) {
+                    return.as = c("records", "text", "data.frame"), biothings) {
   standardGeneric("getTaxons")
 })
 
 setMethod("getTaxons", c(biothings = "BioThings"),
           function(taxonids, fields = NULL, ...,
-                   return.as = c("data.frame", "records", "text"), biothings) {
+                   return.as = c("records", "text", "data.frame"), biothings) {
   return.as <- match.arg(return.as)
   getThings(taxonids, "taxon", "taxon", fields, ...,
             return.as = return.as, biothings = biothings)
@@ -46,7 +46,7 @@ setMethod("getTaxons", c(biothings = "BioThings"),
 
 setMethod("getTaxons", c(biothings = "missing"),
           function(taxonids, fields = NULL, ...,
-                   return.as = c("data.frame", "records", "text"), biothings) {
+                   return.as = c("records", "text", "data.frame"), biothings) {
   biothings <- BioThings()
   getTaxons(taxonids, fields, ..., return.as = return.as,
             biothings = biothings)

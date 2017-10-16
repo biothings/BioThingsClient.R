@@ -5,9 +5,9 @@ biothings <- BioThings()
 test_that("Check that getVariant returns appropriate type.", {
   # variant_df <-
   #   getVariant("rs58991260")
-  variantlist <-
+  variant_list <-
     getVariant("rs58991260", return.as = "records")
-  variantchar <-
+  variant_char <-
     getVariant("rs58991260", return.as = "text")
 
   # expect_is(variant_df, "data.frame")

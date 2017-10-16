@@ -32,13 +32,13 @@ setMethod("getVariant", c(biothings = "missing"),
 #' @exportMethod getVariants
 setGeneric("getVariants", signature = c("biothings"),
            function(variantids, fields = NULL, ...,
-                    return.as = c("data.frame", "records", "text"), biothings) {
+                    return.as = c("records", "text", "data.frame"), biothings) {
   standardGeneric("getVariants")
 })
 
 setMethod("getVariants", c(biothings = "BioThings"),
           function(variantids, fields = NULL, ...,
-                   return.as = c("data.frame", "records", "text"), biothings) {
+                   return.as = c("records", "text", "data.frame"), biothings) {
   return.as <- match.arg(return.as)
   getThings(variantids, "variant", "variant", fields, ...,
             return.as = return.as, biothings = biothings)
@@ -46,7 +46,7 @@ setMethod("getVariants", c(biothings = "BioThings"),
 
 setMethod("getVariants", c(biothings = "missing"),
           function(variantids, fields = NULL, ...,
-                   return.as = c("data.frame", "records", "text"), biothings) {
+                   return.as = c("records", "text", "data.frame"), biothings) {
   biothings <- BioThings()
   getVariants(variantids, fields, ..., return.as = return.as,
               biothings = biothings)

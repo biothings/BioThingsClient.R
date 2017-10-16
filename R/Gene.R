@@ -36,14 +36,14 @@ setMethod("getGene", c(biothings = "missing"),
 setGeneric("getGenes", signature = c("biothings"),
            function(geneids, fields = c("symbol", "name", "taxid",
                                         "entrezgene"),
-                    ..., return.as = c("data.frame", "records", "text"),
+                    ..., return.as = c("records", "text", "data.frame"),
                     biothings) {
   standardGeneric("getGenes")
 })
 
 setMethod("getGenes", c(biothings = "BioThings"),
           function(geneids, fields = c("symbol", "name", "taxid", "entrezgene"),
-                   ..., return.as = c("data.frame", "records", "text"),
+                   ..., return.as = c("records", "text", "data.frame"),
                    biothings) {
   return.as <- match.arg(return.as)
   getThings(geneids, "gene", "gene", fields, ..., return.as = return.as,
@@ -52,7 +52,7 @@ setMethod("getGenes", c(biothings = "BioThings"),
 
 setMethod("getGenes", c(biothings = "missing"),
           function(geneids, fields = c("symbol", "name", "taxid", "entrezgene"),
-                   ..., return.as = c("data.frame", "records", "text"),
+                   ..., return.as = c("records", "text", "data.frame"),
                    biothings) {
   biothings <- BioThings()
   getGenes(geneids, fields, ..., return.as = return.as, biothings = biothings)

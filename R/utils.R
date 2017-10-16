@@ -2,7 +2,7 @@
 
 #' @keywords internal
 .collapse <- function(...) {
-    paste(unlist(list(...)), sep=",", collapse=",")
+    paste(unlist(list(...)), sep = ",", collapse = ",")
 }
 
 #' @keywords internal
@@ -20,13 +20,13 @@
 .splitBySize <- function(x, maxsize) {
     n <- length(x)
     num.chunks <- ceiling(n / maxsize)
-    f <- Hmisc::cut2(1:n, g=num.chunks)
+    f <- Hmisc::cut2(1:n, g = num.chunks)
     unname(split(x, f))
 }
 
 #' @keywords internal
-.pop <- function(list, item, default_value=NULL){
-    if (is.null(list[[item]])){
+.pop <- function(list, item, default_value = NULL) {
+    if (is.null(list[[item]])) {
         return(default_value)
     }
     else{
@@ -36,20 +36,20 @@
 
 #' @keywords internal
 .unnest <- function(list) {
-    while(any(vapply(list, is.list, TRUE))){
-    list<-lapply(list, unlist, recursive=FALSE)
-    return(list)
+    while(any(vapply(list, is.list, TRUE))) {
+      list <- lapply(list, unlist, recursive = FALSE)
     }
+    return(list)
 }
 
 #' @keywords internal
 .unnest.df <- function(df, recursive=TRUE) {
-    reslist <-lapply(colnames(df), function(i) {
+    reslist <- lapply(colnames(df), function(i) {
         if (is(df[[i]], "data.frame")) {
-          if (recursive){
-            df[[i]]<-.unnest.df(df[[i]], recursive=TRUE)
+          if (recursive) {
+            df[[i]] <- .unnest.df(df[[i]], recursive = TRUE)
           }
-            setNames(df[[i]], paste(i, colnames(df[[i]]), sep="."))
+            setNames(df[[i]], paste(i, colnames(df[[i]]), sep = "."))
         }
         else {
             df[i]
@@ -70,8 +70,8 @@
 #' @keywords internal
 .json.batch.collapse <- function(x){
     #stopifnot(all(grepl("^\\s*\\[.*\\]\\s*$", x, perl=TRUE)))
-    x <- gsub(pattern="^\\s*\\[|\\]\\s*$", replacement="", x, perl=TRUE)
-    x <- paste(x, collapse=",")
+    x <- gsub(pattern = "^\\s*\\[|\\]\\s*$", replacement = "", x, perl = TRUE)
+    x <- paste(x, collapse = ",")
     paste("[", x, "]")
 }
 
@@ -83,9 +83,9 @@
 }
 
 #' @keywords internal
-.uncollapse <- function(x, sep=",") {
+.uncollapse <- function(x, sep = ",") {
     x <- as.character(unlist(x))
-    unlist(strsplit(x, sep, fixed=TRUE))
+    unlist(strsplit(x, sep, fixed = TRUE))
 }
 
 #' @keywords internal
@@ -95,6 +95,6 @@
                   strsplit(i[grepl(colName, i)], "=")
                 }),
          function(i) {
-           tryCatch(i[[2]], error=function(e) e <- NA_integer_)
+           tryCatch(i[[2]], error = function(e) e <- NA_integer_)
          }) %>% as.numeric()
 }

@@ -36,13 +36,13 @@ getChem <- getChemical
 #' @exportMethod getChemicals
 setGeneric("getChemicals", signature = c("biothings"),
            function(chemids, fields = NULL, ...,
-                    return.as = c("data.frame", "records", "text"), biothings) {
+                    return.as = c("records", "text", "data.frame"), biothings) {
   standardGeneric("getChemicals")
 })
 
 setMethod("getChemicals", c(biothings = "BioThings"),
           function(chemids, fields = NULL, ...,
-                   return.as = c("data.frame", "records", "text"), biothings) {
+                   return.as = c("records", "text", "data.frame"), biothings) {
   return.as <- match.arg(return.as)
   getThings(chemids, "chem", "drug", fields, ...,
             return.as = return.as, biothings = biothings)
@@ -50,7 +50,7 @@ setMethod("getChemicals", c(biothings = "BioThings"),
 
 setMethod("getChemicals", c(biothings = "missing"),
           function(chemids, fields = NULL, ...,
-                   return.as = c("data.frame", "records", "text"), biothings) {
+                   return.as = c("records", "text", "data.frame"), biothings) {
   biothings <- BioThings()
   getChemicals(chemids, fields, ..., return.as = return.as,
                biothings = biothings)
