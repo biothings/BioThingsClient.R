@@ -6,10 +6,11 @@
 \title{query
 Retrieve results from the query endpoint of BioThings APIs}
 \usage{
-query(q, client, ..., return.as = "data.frame", biothings)
-
-queryMany(qterms, client, scopes = NULL, ..., return.as = "data.frame",
+query(q, client, ..., return.as = c("records", "data.frame", "text"),
   biothings)
+
+queryMany(qterms, client, scopes = NULL, ..., return.as = c("records",
+  "data.frame", "text"), biothings)
 }
 \arguments{
 \item{q}{A query string}

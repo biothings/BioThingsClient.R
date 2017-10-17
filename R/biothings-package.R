@@ -14,4 +14,5 @@
 #' @importFrom methods new
 #' @importFrom methods slot
 #' @importFrom stats setNames
+#' @importFrom R6 R6Class
 "_PACKAGE"

@@ -22,6 +22,7 @@ common_kwargs <- list(
 #'
 biothings_clients <- list(
   gene = append(list(
+    entity = "gene",
     base_url = "http://mygene.info/v3",
     user_agent = "MyGene.R",
     endpoints = c("query" = "query", "gene" = "gene",
@@ -29,6 +30,7 @@ biothings_clients <- list(
     common_kwargs
   ),
   variant = append(list(
+    entity = "variant",
     base_url = "http://myvariant.info/v1",
     user_agent = "MyVariant.R",
     endpoints = c("query" = "query", "variant" = "variant",
@@ -38,6 +40,7 @@ biothings_clients <- list(
     common_kwargs
   ),
   taxon = append(list(
+    entity = "taxon",
     base_url = "http://t.biothings.io/v1",
     user_agent = "MyTaxon.R",
     endpoints = c("query" = "query", "taxon" = "taxon",
@@ -47,6 +50,7 @@ biothings_clients <- list(
     common_kwargs
   ),
   chem = list(
+    entity = "chemical",
     base_url = "http://mychem.info/v1",
     user_agent = "MyChem.R",
     endpoints = c("query" = "query", "drug" = "drug",

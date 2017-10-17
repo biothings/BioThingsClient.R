@@ -99,3 +99,19 @@
            tryCatch(i[[2]], error = function(e) e <- NA_integer_)
          }) %>% as.numeric()
 }
+
+#' @keywords internal
+.return.as <- function(gene_obj,
+                       return.as = c("data.frame", "records", "text")) {
+  return.as <- match.arg(return.as)
+  if (return.as == "data.frame") {
+    df <- .json2df(gene_obj)
+    df <- plyr::rename(df, c("X_id" = "_id"))
+    df$`_version` <- NULL
+    return(df)
+  } else if (return.as == "text") {
+    return(.json.batch.collapse(gene_obj))
+  } else {
+    return(jsonlite::fromJSON(.json.batch.collapse(gene_obj),
+                              simplifyDataFrame = FALSE))}
+}

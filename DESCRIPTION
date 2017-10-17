@@ -17,7 +17,8 @@ Imports:
     plyr,
     magrittr,
     methods,
-    Hmisc
+    Hmisc,
+    R6
 Suggests:
     testthat
 Roxygen: list(wrap = FALSE)
@@ -26,6 +27,7 @@ Collate:
     'biothings-package.R'
     'utils.R'
     'BioThings.R'
+    'BioThingsR6.R'
     'get.R'
     'Chemical.R'
     'Gene.R'
