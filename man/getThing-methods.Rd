@@ -68,13 +68,12 @@ The API response in the form of the provided argument return.as
 }
 \examples{
 #Equivalent:
-getThing("1017", "gene", "gene",
-          fields = c("symbol","name","taxid","entrezgene"),
+getThing("1017", "gene", fields = c("symbol","name","taxid","entrezgene"),
           return.as = "text")
 getGene("1017", return.as = "text")
 
 # Also equivalent
-getThings(c("1017","1018","ENSG00000148795"), "gene", "gene",
+getThings(c("1017","1018","ENSG00000148795"), "gene",
           fields = c("symbol","name","taxid","entrezgene"),
           return.as = "text")
 getGenes(c("1017","1018","ENSG00000148795"), return.as = "text")
