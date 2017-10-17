@@ -14,7 +14,7 @@ setMethod("getVariant", c(biothings = "BioThings"),
           function(variantid, fields = NULL, ...,
                    return.as = c("records", "text", "data.frame"), biothings) {
   return.as <- match.arg(return.as)
-  getThing(variantid, "variant", "variant", fields, ..., return.as = return.as,
+  getThing(variantid, "variant", fields, ..., return.as = return.as,
            biothings = biothings)
 })
 
@@ -40,7 +40,7 @@ setMethod("getVariants", c(biothings = "BioThings"),
           function(variantids, fields = NULL, ...,
                    return.as = c("records", "text", "data.frame"), biothings) {
   return.as <- match.arg(return.as)
-  getThings(variantids, "variant", "variant", fields, ...,
+  getThings(variantids, "variant", fields, ...,
             return.as = return.as, biothings = biothings)
 })
 

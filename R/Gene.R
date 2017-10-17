@@ -16,7 +16,7 @@ setMethod("getGene", c(biothings = "BioThings"),
                    ..., return.as = c("records", "text", "data.frame"),
                    biothings) {
   return.as <- match.arg(return.as)
-  getThing(geneid, "gene", "gene", fields, ..., return.as = return.as,
+  getThing(geneid, "gene", fields, ..., return.as = return.as,
            biothings = biothings)
 })
 
@@ -46,7 +46,7 @@ setMethod("getGenes", c(biothings = "BioThings"),
                    ..., return.as = c("records", "text", "data.frame"),
                    biothings) {
   return.as <- match.arg(return.as)
-  getThings(geneids, "gene", "gene", fields, ..., return.as = return.as,
+  getThings(geneids, "gene", fields, ..., return.as = return.as,
             biothings = biothings)
 })
 
