@@ -1,6 +1,5 @@
 #' @include utils.R
 
-
 #' @title BioThings R6 Class
 #'
 #' @description
