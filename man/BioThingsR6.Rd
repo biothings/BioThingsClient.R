@@ -78,5 +78,4 @@ gene_client$getAnnotations(c("1017", "1018"))
 gene_client$query("sp2")
 gene_client$queryMany(c("1053_at", "117_at"), scopes="reporter", species="human")
 
-
 }

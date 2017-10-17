@@ -72,8 +72,6 @@
 #'
 #' @name BioThingsR6
 #' @importFrom R6 R6Class
-#' @examples
-#'
 NULL
 
 #' @export BioThingsR6
