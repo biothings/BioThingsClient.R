@@ -14,7 +14,7 @@ setMethod("getTaxon", c(biothings = "BioThings"),
           function(taxonid, fields = NULL, ...,
                    return.as = c("records", "text", "data.frame"), biothings) {
   return.as <- match.arg(return.as)
-  getThing(taxonid, "taxon", "taxon", fields, ...,
+  getThing(taxonid,"taxon", fields, ...,
            return.as = return.as, biothings = biothings)
 })
 
@@ -40,7 +40,7 @@ setMethod("getTaxons", c(biothings = "BioThings"),
           function(taxonids, fields = NULL, ...,
                    return.as = c("records", "text", "data.frame"), biothings) {
   return.as <- match.arg(return.as)
-  getThings(taxonids, "taxon", "taxon", fields, ...,
+  getThings(taxonids,"taxon", fields, ...,
             return.as = return.as, biothings = biothings)
 })
 

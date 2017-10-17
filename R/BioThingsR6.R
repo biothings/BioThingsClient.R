@@ -1,59 +1,7 @@
 #' @include utils.R
 
-#' @export
-biothings_clientsR6 <- list(
-  gene = append(list(
-    entity = "gene",
-    base_url = "http://mygene.info/v3",
-    user_agent = "MyGene.R",
-    endpoints = list("query" = list(path = "query", return_types = c()),
-                  "annotation" = list(path = "gene",
-                                      return_types = c("records", "text",
-                                                       "data.frame"),
-                                      fields = c("symbol", "name", "taxid",
-                                                 "entrezgene")),
-                  "gene id" = "gene/:geneid", "metadata" = "metadata")),
-    common_kwargs
-  ),
-  variant = append(list(
-    entity = "variant",
-    base_url = "http://myvariant.info/v1",
-    user_agent = "MyVariant.R",
-    endpoints = c("query" = list(path = "query", return_types = c()),
-                  "annotation" = list(path = "variant", return_types = c()),
-                  "variant id" = "variant/:variantid",
-                  "metadata" = "metadata",
-                  "metadata fields" = "metadata/fields")),
-    common_kwargs
-  ),
-  taxon = append(list(
-    entity = "taxon",
-    base_url = "http://t.biothings.io/v1",
-    user_agent = "MyTaxon.R",
-    endpoints = c("query" = list(path = "query", return_types = c()),
-                  "annotation" = list(path = "taxon", return_types = c()),
-                  "taxon id" = "taxon/:taxonid",
-                  "metadata" = "metadata",
-                  "metadata fields" = "metadata/fields")),
-    common_kwargs
-  ),
-  chem = list(
-    entity = "chemical",
-    base_url = "http://mychem.info/v1",
-    user_agent = "MyChem.R",
-    endpoints = c("query" = list(path = "query", return_types = c()),
-                  "annotation" = list(path = "drug", return_types = c()),
-                  "drug id" = "drug/:drugid",
-                  "metadata" = "metadata",
-                  "metadata fields" = "metadata/fields"),
-    delay = 1,
-    step = 10,
-    max_query = 10
-  )
-)
-
 #' @export BioThingsR6
-BioThingsR6 <- R6::R6Class("BioThingsR6",
+BioThingsR6 <- R6Class("BioThingsR6",
   public = list(
     api = NULL,
     email = NULL,
@@ -71,8 +19,8 @@ BioThingsR6 <- R6::R6Class("BioThingsR6",
         self$debug <- debug
 
       if (is.character(api_config) & exists("biothings_clients"))
-        if (api_config %in% names(biothings_clientsR6))
-          self$api <- biothings_clientsR6[[api_config]]
+        if (api_config %in% names(biothings_clients))
+          self$api <- biothings_clients[[api_config]]
         else
           stop("The provided key is not available in the biothings_clients config.")
       else

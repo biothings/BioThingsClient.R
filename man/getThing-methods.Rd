@@ -16,9 +16,9 @@
 \alias{getVariants}
 \title{Get items from BioThings APIs}
 \usage{
-getThing(thing, client, endpoint, fields, ..., return.as, biothings)
+getThing(thing, client, fields, ..., return.as, biothings)
 
-getThings(things, client, endpoint, fields, ..., return.as, biothings)
+getThings(things, client, fields, ..., return.as, biothings)
 
 getChemical(chemid, fields = NULL, ..., return.as = c("records", "text"),
   biothings)
@@ -54,8 +54,6 @@ getVariants(variantids, fields = NULL, ..., return.as = c("records", "text",
 \item{thing}{character.}
 
 \item{client}{character.}
-
-\item{endpoint}{character.}
 
 \item{fields}{vector.}
 

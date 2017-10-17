@@ -33,7 +33,7 @@ setMethod("query", c(biothings = "BioThings"),
   params[['q']] <- q
   client_config <- biothings@clients[[client]]
   res <- .request.get(biothings, client,
-                      client_config[["endpoints"]][["query"]], params)
+                      client_config$endpoints$query$path, params)
 
   if (return.as == "data.frame") {
     return(jsonlite::fromJSON(res))
@@ -82,7 +82,7 @@ setMethod("queryMany", c(biothings = "BioThings"),
     }
 
     out <- .repeated.query(biothings, client,
-                           client_config[["endpoints"]][["query"]],
+                           client_config$endpoints$query$path,
                            vecparams = vecparams, params = params)
 
     out.li <- .return.as(out, "records")

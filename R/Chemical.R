@@ -14,7 +14,7 @@ setMethod("getChemical", c(biothings = "BioThings"),
           function(chemid, fields = NULL, ...,
                    return.as = c("records", "text"), biothings) {
   return.as <- match.arg(return.as)
-  getThing(chemid, "chem", "drug", fields, ...,
+  getThing(chemid, "chem", fields, ...,
            return.as = return.as, biothings = biothings)
 })
 
@@ -44,7 +44,7 @@ setMethod("getChemicals", c(biothings = "BioThings"),
           function(chemids, fields = NULL, ...,
                    return.as = c("records", "text", "data.frame"), biothings) {
   return.as <- match.arg(return.as)
-  getThings(chemids, "chem", "drug", fields, ...,
+  getThings(chemids, "chem", fields, ...,
             return.as = return.as, biothings = biothings)
 })
 

@@ -4,15 +4,15 @@ biothings <- BioThings()
 
 test_that("Check that getThing returns appropriate type.", {
   gene_1017_df <-
-    getThing("1017", "gene", "gene",
+    getThing("1017", "gene",
              fields = c("symbol", "name", "taxid", "entrezgene"),
              return.as = "data.frame")
   gene_1017_list <-
-    getThing("1017", "gene", "gene",
+    getThing("1017", "gene",
              fields = c("symbol", "name", "taxid", "entrezgene"),
              return.as = "records")
   gene_1017_char <-
-    getThing("1017", "gene", "gene",
+    getThing("1017", "gene",
              fields = c("symbol", "name", "taxid", "entrezgene"),
              return.as = "text")
 
@@ -30,15 +30,15 @@ test_that("Check that getThing returns appropriate type.", {
 
 test_that("Check that getThings returns appropriate type.", {
   genes_df <-
-    getThings(c("1017","1018","ENSG00000148795"), "gene", "gene",
+    getThings(c("1017","1018","ENSG00000148795"), "gene",
               fields = c("symbol", "name", "taxid", "entrezgene"),
               return.as = "data.frame")
   genes_list <-
-    getThings(c("1017","1018","ENSG00000148795"), "gene", "gene",
+    getThings(c("1017","1018","ENSG00000148795"), "gene",
               fields = c("symbol", "name", "taxid", "entrezgene"),
               return.as = "records")
   genes_char <-
-    getThings(c("1017","1018","ENSG00000148795"), "gene", "gene",
+    getThings(c("1017","1018","ENSG00000148795"), "gene",
               fields = c("symbol", "name", "taxid", "entrezgene"),
               return.as = "text")
 
