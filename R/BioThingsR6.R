@@ -1,5 +1,85 @@
 #' @include utils.R
 
+
+#' @title BioThings R6 Class
+#'
+#' This class provides a flexible, configuration-based client for the BioThings
+#' APIs. The user can pass a configuration file or a key for the provided
+#' configuration in the biothings_client object.
+#'
+#' A configuration (for example, the Gene API) takes the form:
+#'
+#' \preformatted{
+#' append(list(
+#'   entity = "gene",
+#'   base_url = "http://mygene.info/v3",
+#'   user_agent = "MyGene.R",
+#'   endpoints = list("query" = list(path = "query"),
+#'                    "annotation" = list(path = "gene",
+#'                                        return_types = c("records", "text",
+#'                                                         "data.frame"),
+#'                                        fields = c("symbol", "name", "taxid",
+#'                                                   "entrezgene")),
+#'                    "metadata" = list(path = "metadata"),
+#'                    "metadata_fields" = list(path = "metadata/fields"))),
+#'   common_kwargs
+#' )
+#' }
+#'
+#' With \code{common_kwargs} as:
+#'
+#' \preformatted{
+#' common_kwargs <- list(delay = 1, step = 1000, max_query = 1000)
+#' }
+#'
+#' @section Instantiation:
+#' \code{BioThings$new(api_config, email = NULL, verbose = TRUE, debug = FALSE)}
+#' \itemize{
+#'   \item \code{api_config} - This can be a api config as shown above or a key (character) for the biothings_client object
+#'   \item \code{email} - Provide an email so that your usage of the API can be tracked
+#'   \item \code{verbose} - Logical
+#'   \item \code{debug} - Logical
+#' }
+#'
+#' @section Annotate by ID:
+#' \code{getAnnotation(id,
+#'                     fields = self$api$endpoints$annotation$fields,
+#'                     ...,
+#'                     return.as = "records")}
+#' \code{getAnnotations(ids,
+#'                      fields = self$api$endpoints$annotation$fields,
+#'                      ...,
+#'                      return.as = "records")}
+#' \itemize{
+#'   \item \code{id}, \code{ids} - An id (character) or a (character) vector of ids
+#'   \item \code{fields} - Provide an email so that your usage of the API can be tracked
+#'   \item \code{...} - Additional parameters for the API. See API reference
+#'   \item \code{return.as} - data.frame, records or text
+#' }
+#'
+#' @section query the API:
+#' \code{query(q, ..., return.as = "records")}
+#' \code{queryMany(qterms, scopes = NULL, ..., return.as = "records")}
+#' \itemize{
+#'   \item \code{q}, \code{qterms} - A query (character) or a (character) vector of query terms (qterms)
+#'   \item \code{scopes} - A scope or vector of scopes
+#'   \item \code{...} - Additional parameters for the API. See API reference
+#'   \item \code{return.as} - data.frame, records or text
+#' }
+#' @examples
+#' gene_client <- BioThingsR6$new("gene")
+#'
+#' gene_client$getAnnotation("1017")
+#' gene_client$getAnnotations(c("1017", "1018"))
+#' gene_client$query("sp2")
+#' gene_client$queryMany(c("1053_at", "117_at"), scopes="reporter", species="human")
+#'
+#' @name BioThingsR6
+#' @importFrom R6 R6Class
+#' @examples
+#'
+NULL
+
 #' @export BioThingsR6
 BioThingsR6 <- R6Class("BioThingsR6",
   public = list(
@@ -27,19 +107,19 @@ BioThingsR6 <- R6Class("BioThingsR6",
         stop("Error with the provided api_config argument.")
     },
     getAnnotation = function(id,
-                             fields = self$api$endpoints[["annotation"]]$fields,
+                             fields = self$api$endpoints$annotation$fields,
                              ..., return.as = "records") {
       params <- list(...)
       params$fields <- .collapse(fields)
-      print(paste(self$api$endpoints[["annotation"]]$path, id, sep = "/"))
+      print(paste(self$api$endpoints$annotation$path, id, sep = "/"))
       print(params)
-      res <- private$.request.get(paste(self$api$endpoints[["annotation"]]$path,
+      res <- private$.request.get(paste(self$api$endpoints$annotation$path,
                                         id, sep = "/"), params)
       .return.as(res, return.as = return.as)
     },
     getAnnotations = function(ids,
                               fields =
-                                self$api$endpoints[["annotation"]]$fields, ...,
+                                self$api$endpoints$annotation$fields, ...,
                               return.as = "records") {
       params <- list()
       if (exists('fields')) {
@@ -50,7 +130,7 @@ BioThingsR6 <- R6Class("BioThingsR6",
 
       vecparams <- list(ids = .uncollapse(ids))
 
-      res <- private$.repeated.query(self$api$endpoints[["annotation"]]$path,
+      res <- private$.repeated.query(self$api$endpoints$annotation$path,
                                      vecparams = vecparams, params = params)
 
       .return.as(res, return.as = return.as)
