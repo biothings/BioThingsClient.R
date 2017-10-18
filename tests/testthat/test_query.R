@@ -11,3 +11,11 @@ test_that("Check that queryMany returns the appropriate types", {
                               species = "human")
   expect_is(gene_querymany, "list")
 })
+
+test_that("Check functionality of fetch_all", {
+  qres <- query('_exists_:pdb', "gene")[[1]]
+  total <- qres$total
+
+  faqres <- query('_exists_:pdb', "gene", fetch_all=TRUE, fields='pdb')
+  expect_equal(total, length(faqres))
+})

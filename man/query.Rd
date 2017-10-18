@@ -6,8 +6,8 @@
 \title{query
 Retrieve results from the query endpoint of BioThings APIs}
 \usage{
-query(q, client, ..., return.as = c("records", "data.frame", "text"),
-  biothings)
+query(q, client, ..., fetch_all = FALSE, return.as = c("records",
+  "data.frame", "text"), biothings)
 
 queryMany(qterms, client, scopes = NULL, ..., return.as = c("records",
   "data.frame", "text"), biothings)
@@ -18,6 +18,8 @@ queryMany(qterms, client, scopes = NULL, ..., return.as = c("records",
 \item{client}{A BioThings client name}
 
 \item{...}{Any parameters to pass to API}
+
+\item{fetch_all}{This returns a list of _all_ results for a query, regardless of \code{return.as}. See the API documentation.}
 
 \item{return.as}{Type of return value}
 

@@ -60,6 +60,7 @@
 #'   \item \code{q}, \code{qterms} - A query (character) or a (character) vector of query terms (qterms)
 #'   \item \code{scopes} - A scope or vector of scopes
 #'   \item \code{...} - Additional parameters for the API. See API reference
+#'   \item \code{fetch_all} - This returns a list of _all_ results for a query, regardless of \code{return.as}. See the API documentation.
 #'   \item \code{return.as} - data.frame, records or text
 #' }
 #' @examples
@@ -105,8 +106,7 @@ BioThingsR6 <- R6Class("BioThingsR6",
                              ..., return.as = "records") {
       params <- list(...)
       params$fields <- .collapse(fields)
-      print(paste(self$api$endpoints$annotation$path, id, sep = "/"))
-      print(params)
+
       res <- private$.request.get(paste(self$api$endpoints$annotation$path,
                                         id, sep = "/"), params)
       .return.as(res, return.as = return.as)
@@ -129,19 +129,50 @@ BioThingsR6 <- R6Class("BioThingsR6",
 
       .return.as(res, return.as = return.as)
     },
-    query = function(q, ..., return.as = "records") {
+    query = function(q, ..., fetch_all = FALSE, return.as = "records") {
       # return.as <- match.arg(return.as)
       params <- list(...)
-      params[['q']] <- q
+      params$q <- q
+      params$fetch_all <- fetch_all
+      res <- private$.request.get(self$api$endpoints$query$path, params)
 
-      res <- private$.request.get(self$api$endpoints[["query"]]$path, params)
+      if (fetch_all) {
+        resl <- .return.as(res, "records")[[1]]
 
-      if (return.as == "data.frame") {
-        return(jsonlite::fromJSON(res))
-      } else if (return.as == "text") {
-        return(.return.as(res, "text"))
-      } else if (return.as == "records") {
-        return(.return.as(res, "records"))
+        results <- resl$hits
+        if ("_scroll_id" %in% names(resl)) {
+          if (return.as != "records" & self$verbose)
+            message("fetch_all requires the return type to be records. Returning records.")
+
+          if (self$verbose)
+            message("Getting additional records. Took: ", resl$took)
+
+          scroll_id <- TRUE
+          params$scroll_id <- resl[["_scroll_id"]]
+
+          while (scroll_id) {
+            scroll <- private$.request.get(self$api$endpoints$query$path, params)
+            scroll <- .return.as(scroll, "records")[[1]]
+
+            if (!("error" %in% names(scroll))) {
+              if (self$verbose)
+                message("Getting additional records. Took: ", scroll$took)
+
+              params$scroll_id <- scroll[["_scroll_id"]]
+              results <- c(results, scroll$hits)
+            } else
+              scroll_id <- FALSE
+          }
+        }
+        return(results)
+      } else {
+        if (return.as == "data.frame") {
+          return(jsonlite::fromJSON(res))
+        } else if (return.as == "text") {
+          return(.return.as(res, "text"))
+        } else if (return.as == "records") {
+          return(.return.as(res, "records"))
+        }
       }
     },
     queryMany = function(qterms, scopes = NULL, ...,
@@ -161,7 +192,7 @@ BioThingsR6 <- R6Class("BioThingsR6",
           return(query(qterms, ...))
         }
 
-        out <- private$.repeated.query(self$api$endpoints[["query"]]$path,
+        out <- private$.repeated.query(self$api$endpoints$query$path,
                                        vecparams = vecparams, params = params)
 
         out.li <- .return.as(out, "records")

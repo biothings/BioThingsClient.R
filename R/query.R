@@ -9,6 +9,7 @@
 #' @param qterms A vector of query strings
 #' @param client A BioThings client name
 #' @param ... Any parameters to pass to API
+#' @param fetch_all This returns a list of _all_ results for a query, regardless of \code{return.as}. See the API documentation.
 #' @param return.as Type of return value
 #' @param biothings An S4 class BioThings object
 #' @return Returns the API result as the provided return.as type
@@ -18,36 +19,71 @@
 #' @examples
 #' query(q="NM_013993", client = "gene")
 setGeneric("query", signature = c("biothings"),
-           function(q, client, ...,
+           function(q, client, ..., fetch_all = FALSE,
                     return.as = c("records", "data.frame", "text"), biothings) {
   standardGeneric("query")
 })
 
 setMethod("query", c(biothings = "BioThings"),
-          function(q, client, ...,
+          function(q, client, ..., fetch_all = FALSE,
                    return.as = c("records", "data.frame", "text"), biothings) {
   if (all.equal(return.as, c("records", "data.frame", "text")))
     return.as = "records"
-  # return.as <- match.arg(return.as)
-  params <- list(...)
-  params[['q']] <- q
-  client_config <- biothings@clients[[client]]
-  res <- .request.get(biothings, client,
-                      client_config$endpoints$query$path, params)
 
-  if (return.as == "data.frame") {
-    return(jsonlite::fromJSON(res))
-  } else if (return.as == "text") {
-    return(.return.as(res, "text"))
-  } else if (return.as == "records") {
-    return(.return.as(res, "records"))
+  client_config <- biothings@clients[[client]]
+  params <- list(...)
+  params$q <- q
+  params$fetch_all <- fetch_all
+  res <- .request.get(biothings, client, client_config$endpoints$query$path,
+                      params)
+
+  if (fetch_all) {
+    resl <- .return.as(res, "records")[[1]]
+
+    results <- resl$hits
+
+    if ("_scroll_id" %in% names(resl)) {
+      if (return.as != "records" & biothings@verbose)
+        message("fetch_all requires the return type to be records. Returning records.")
+
+      if (biothings@verbose)
+        message("Getting additional records. Took: ", resl$took)
+
+      scroll_id <- TRUE
+      params$scroll_id <- resl[["_scroll_id"]]
+
+      while (scroll_id) {
+        scroll <- .request.get(biothings, client,
+                               client_config$endpoints$query$path, params)
+        scroll <- .return.as(scroll, "records")[[1]]
+
+        if (!("error" %in% names(scroll))) {
+          if (biothings@verbose)
+            message("Getting additional records. Took: ", scroll$took)
+
+          params$scroll_id <- scroll[["_scroll_id"]]
+          results <- c(results, scroll$hits)
+        } else
+          scroll_id <- FALSE
+      }
+    }
+    return(results)
+  } else {
+    if (return.as == "data.frame") {
+      return(jsonlite::fromJSON(res))
+    } else if (return.as == "text") {
+      return(.return.as(res, "text"))
+    } else if (return.as == "records") {
+      return(.return.as(res, "records"))
+    }
   }
 })
 
 setMethod("query", c(biothings = "missing"),
-          function(q, client, ..., return.as, biothings) {
+          function(q, client, ...,  fetch_all, return.as, biothings) {
   biothings <- BioThings()
-  query(q, client, ..., return.as = return.as, biothings = biothings)
+  query(q, client, ..., fetch_all = fetch_all, return.as = return.as,
+        biothings = biothings)
 })
 
 # queryMany ---------------------------------------------------------------

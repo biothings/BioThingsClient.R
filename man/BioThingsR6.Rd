@@ -66,6 +66,7 @@ common_kwargs <- list(delay = 1, step = 1000, max_query = 1000)
   \item \code{q}, \code{qterms} - A query (character) or a (character) vector of query terms (qterms)
   \item \code{scopes} - A scope or vector of scopes
   \item \code{...} - Additional parameters for the API. See API reference
+  \item \code{fetch_all} - This returns a list of _all_ results for a query, regardless of \code{return.as}. See the API documentation.
   \item \code{return.as} - data.frame, records or text
 }
 }
