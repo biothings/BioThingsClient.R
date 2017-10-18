@@ -15,4 +15,7 @@
 #' @importFrom methods slot
 #' @importFrom stats setNames
 #' @importFrom R6 R6Class
+#' @import httr
+#' @import stats
+#' @import utils
 "_PACKAGE"

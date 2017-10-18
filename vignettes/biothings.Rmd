@@ -1,0 +1,181 @@
+---
+title: "biothings Package"
+author: "Thmas Johnson"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{biothings Package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The [BioThings APIs](http://biothings.io/) provide query and retrieve annoation of genes, variants, chemicals and taxons. 
+
+
+## Package Usage
+This package has S4 methods for accessing each API, as well as an R6 class that is extensible so that as other APIs are made, a configuration can be passed and used to query and retrieve annotation from said APIs. The S4 methods are also extensible by providing a configuration object like the included `biothings_clients` configuration, and then using the `getThing` and `getThings` methods.
+
+
+### Annotations
+Each API (gene, taxon, variant and chemical - when this was written) has a set of methods for getting annotations. Additionally, there are the generic `getThing` and `getThings` methods.
+
+
+#### Example: `getGene` and `getGenes`
+These methods can be used with a defined `BioThings` class object or with none (missing).
+
+With a defined `BioThings` object (see next example for output):
+```
+> biothings <- BioThings()
+> # Suppress messages
+> slot(biothings, "verbose") <- FALSE
+> getGene("1017", biothings = biothings)
+> getGenes(c("1017","1018","ENSG00000148795"), biothings = biothings)
+```
+
+Without (output trimmed):
+```
+> getGene("1017")
+[[1]]
+[[1]]$`_id`
+[1] "1017"
+
+[[1]]$`_score`
+[1] 22.32558
+...(trimmed for space)
+
+> getGenes(c("1017","1018","ENSG00000148795"))
+[[1]]
+[[1]]$`_id`
+[1] "1017"
+
+[[1]]$`_score`
+[1] 22.32558
+...(trimmed for space)
+
+
+[[2]]
+[[2]]$`_id`
+[1] "1018"
+...(trimmed for space)
+```
+
+Users can also specify `fields` and the type of return object. However, due to the size of some API responses, the default is a list (denoted by `"records"`) and we recommend only requesting `"data.frame"` when also specifing fields.
+
+```
+> getGenes(c("1017","1018","ENSG00000148795"),
+           fields = c("symbol","name","taxid","entrezgene"),
+           return.as = "data.frame")
+   _id   _score entrezgene                                           name  symbol
+1 1017 22.32558       1017                      cyclin dependent kinase 2    CDK2
+2 1018 22.32596       1018                      cyclin dependent kinase 3    CDK3
+3 1586 23.35202       1586 cytochrome P450 family 17 subfamily A member 1 CYP17A1
+  taxid           query
+1  9606            1017
+2  9606            1018
+3  9606 ENSG00000148795
+```
+
+
+### Queries
+The APIs also have query endpoints, so a user can provide query terms and receive annotations in that form. The `query` and `queryMany` methods are generic and rely on input of a key for the `biothings_clients` configuration for specification of which API to use. Just like the generic annotation methods, these methods can be used with an updated or customized configuration.
+
+#### Example: `query` and `queryMany`
+
+`query`:
+```
+> query("sp2", "gene")
+[[1]]
+[[1]]$max_score
+[1] 457.1937
+
+[[1]]$took
+[1] 5
+
+[[1]]$total
+[1] 10
+
+[[1]]$hits
+[[1]]$hits[[1]]
+[[1]]$hits[[1]]$`_id`
+[1] "6668"
+...(output trimmed)
+```
+
+`queryMany`:
+```
+> genes <- c('1053_at', '117_at', '121_at', '1255_g_at', '1294_at')
+> # Notice how "gene" is the second argument in the queryMany function
+> queryMany(genes, "gene", scopes=c("symbol", "reporter", "accession"),
+            fields=c("entrezgene", "uniprot"), species='human', returnall=TRUE)
+Finished
+$response
+$response[[1]]
+$response[[1]]$`_id`
+[1] "5982"
+
+$response[[1]]$`_score`
+[1] 22.32529
+
+$response[[1]]$entrezgene
+[1] 5982
+
+$response[[1]]$uniprot
+$response[[1]]$uniprot$`Swiss-Prot`
+[1] "P35250"
+...(output trimmed)
+```
+
+#### Example: Using `fetch_all`
+Some queries return thousands of results. Use `fetch_all` to get all of them.
+
+```
+> faquery <- query('_exists_:pdb', "gene", fetch_all = TRUE, fields = 'pdb')
+Getting additional records. Took: 536
+Getting additional records. Took: 484
+Getting additional records. Took: 301
+Getting additional records. Took: 300
+Getting additional records. Took: 409
+Getting additional records. Took: 538
+Getting additional records. Took: 225
+Getting additional records. Took: 147
+Getting additional records. Took: 46
+> str(faquery)
+List of 8176
+ $ :List of 3
+  ..$ _id   : chr "23211"
+  ..$ _score: num 1.55
+  ..$ pdb   : chr "2CQE"
+ $ :List of 3
+  ..$ _id   : chr "5888"
+  ..$ _score: num 1.55
+  ..$ pdb   : chr [1:6] "1B22" "1N0W" "5H1B" "5H1C" ...
+...(output trimmed)
+```
+### Metadata and Metadata Fields
+
+Users can also retrieve information about metadata for an API with `getMetadata`:
+```
+> getMetadata("gene")
+[[1]]
+[[1]]$source
+NULL
+
+[[1]]$stats
+[[1]]$stats$entrez_retired
+[1] 201591
+
+[[1]]$stats$ensembl_prosite
+[1] 725969
+
+[[1]]$stats$ensembl_pfam
+[1] 1174908
+
+[[1]]$stats$entrez_gene
+[1] 19752422
+...(output trimmed)
+```
+
+As well as metadata fields with `getFields`:
+```
+> getFields("gene") # Beware, produces a lot of output
+```

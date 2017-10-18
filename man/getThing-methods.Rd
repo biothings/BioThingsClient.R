@@ -119,7 +119,8 @@ getVariants(variantids, fields = NULL, ..., return.as = c("records", "text",
 The API response in the form of the provided argument return.as
 }
 \description{
-Use gene, taxon, variant, chemical and other IDs to get annotation information from BioThings APIs.
+Use gene, taxon, variant, chemical and other IDs to get annotation
+information from BioThings APIs.
 }
 \examples{
 #Equivalent:

@@ -12,7 +12,8 @@
 #' @param client A BioThings client name
 #' @param scopes One or more fields (separated by comma) as the search "scopes"
 #' @param ... Any parameters to pass to API
-#' @param fetch_all This returns a list of _all_ results for a query, regardless of \code{return.as}. See the API documentation.
+#' @param fetch_all This returns a list of _all_ results for a query,
+#' regardless of \code{return.as}. See the API documentation.
 #' @param return.as Type of return value
 #' @param biothings An S4 class BioThings object
 #' @return Returns the API result as the provided return.as type
@@ -25,7 +26,8 @@
 #' query(q="NM_013993", client = "gene")
 setGeneric("query", signature = c("biothings"),
            function(q, client, ..., fetch_all = FALSE,
-                    return.as = c("records", "data.frame", "text"), biothings) {
+                    return.as = c("records", "data.frame", "text"),
+                    biothings) {
   standardGeneric("query")
 })
 
@@ -36,7 +38,7 @@ setMethod("query", c(biothings = "BioThings"),
   if (all.equal(return.as, c("records", "data.frame", "text")))
     return.as = "records"
 
-  client_config <- biothings@clients[[client]]
+  client_config <- slot(biothings, "clients")[[client]]
   params <- list(...)
   params$q <- q
   params$fetch_all <- fetch_all
@@ -49,10 +51,11 @@ setMethod("query", c(biothings = "BioThings"),
     results <- resl$hits
 
     if ("_scroll_id" %in% names(resl)) {
-      if (return.as != "records" & biothings@verbose)
-        message("fetch_all requires the return type to be records. Returning records.")
+      if (return.as != "records" & slot(biothings, "verbose"))
+        message("fetch_all requires the return type to be records. ",
+                "Returning records.")
 
-      if (biothings@verbose)
+      if (slot(biothings, "verbose"))
         message("Getting additional records. Took: ", resl$took)
 
       scroll_id <- TRUE
@@ -64,7 +67,7 @@ setMethod("query", c(biothings = "BioThings"),
         scroll <- .return.as(scroll, "records")[[1]]
 
         if (!("error" %in% names(scroll))) {
-          if (biothings@verbose)
+          if (slot(biothings, "verbose"))
             message("Getting additional records. Took: ", scroll$took)
 
           params$scroll_id <- scroll[["_scroll_id"]]
@@ -99,7 +102,8 @@ setMethod("query", c(biothings = "missing"),
 #' @exportMethod queryMany
 setGeneric("queryMany", signature = c("biothings"),
            function(qterms, client, scopes = NULL, ...,
-                    return.as = c("records", "data.frame", "text"), biothings) {
+                    return.as = c("records", "data.frame", "text"),
+                    biothings) {
   standardGeneric("queryMany")
 })
 
@@ -111,7 +115,7 @@ setMethod("queryMany", c(biothings = "BioThings"),
   # return.as <- match.arg(return.as)
   if (all.equal(return.as, c("records", "data.frame", "text")))
     return.as = "records"
-  client_config <- biothings@clients[[client]]
+  client_config <- slot(biothings, "clients")[[client]]
   params <- list(...)
   vecparams <- list(q = .uncollapse(qterms))
   if (exists('scopes')) {
@@ -119,7 +123,7 @@ setMethod("queryMany", c(biothings = "BioThings"),
     params[['scopes']] <- .collapse(scopes)
     returnall <- .pop(params, 'returnall', FALSE)
     params['returnall'] <- NULL
-    verbose <- biothings@verbose
+    verbose <- slot(biothings, "verbose")
 
     if (length(qterms) == 0) {
       return(query(qterms, ...))
@@ -132,8 +136,10 @@ setMethod("queryMany", c(biothings = "BioThings"),
     out.li <- .return.as(out, "records")
 
     found <- sapply(out.li, function(x) is.null(x$notfound))
-    li_missing <- as.character(lapply(out.li[!found], function(x) x[['query']]))
-    li_query <- as.character(lapply(out.li[found], function(x) x[['query']]))
+    li_missing <- as.character(lapply(out.li[!found],
+                                      function(x) x[['query']]))
+    li_query <- as.character(lapply(out.li[found],
+                                    function(x) x[['query']]))
 
     #check duplication hits
     count <- as.list(table(li_query))
@@ -146,8 +152,8 @@ setMethod("queryMany", c(biothings = "BioThings"),
                 li_dup)
       }
       if (length('li_missing') > 0) {
-        sprintf('%f input query terms found dup hits:   %s', length(li_missing),
-                li_missing)
+        sprintf('%f input query terms found dup hits:   %s',
+                length(li_missing), li_missing)
       }
     }
     out <- .return.as(out, return.as = return.as)
@@ -171,7 +177,8 @@ setMethod("queryMany", c(biothings = "missing"),
                    biothings){
 
   biothings <- BioThings()
-  # Should use callGeneric here except that callGeneric gets the variable scoping wrong for the "..." argument
+  # Should use callGeneric here except that callGeneric gets the variable
+  # scoping wrong for the "..." argument
   queryMany(qterms, client, scopes, ..., return.as = return.as,
             biothings = biothings)
 })

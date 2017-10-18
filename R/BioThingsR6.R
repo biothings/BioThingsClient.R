@@ -3,9 +3,9 @@
 #' @title BioThings R6 Class
 #'
 #' @description
-#' This class provides a flexible, configuration-based client for the BioThings
-#' APIs. The user can pass a configuration file or a key for the provided
-#' configuration in the biothings_client object.
+#' This class provides a flexible, configuration-based client for the
+#' BioThings APIs. The user can pass a configuration file or a key for the
+#' provided configuration in the biothings_client object.
 #'
 #' A configuration (for example, the Gene API) takes the form:
 #'
@@ -18,8 +18,8 @@
 #'                    "annotation" = list(path = "gene",
 #'                                        return_types = c("records", "text",
 #'                                                         "data.frame"),
-#'                                        fields = c("symbol", "name", "taxid",
-#'                                                   "entrezgene")),
+#'                                        fields = c("symbol", "name",
+#'                                                   "taxid", "entrezgene")),
 #'                    "metadata" = list(path = "metadata"),
 #'                    "metadata_fields" = list(path = "metadata/fields"))),
 #'   common_kwargs
@@ -35,8 +35,10 @@
 #' @section Instantiation:
 #' \code{BioThings$new(api_config, email, verbose, debug)}
 #' \itemize{
-#'   \item \code{api_config} - This can be a api config as shown above or a key (character) for the biothings_client object
-#'   \item \code{email} - Provide an email so that your usage of the API can be tracked
+#'   \item \code{api_config} - This can be a api config as shown above or a
+#'   key (character) for the biothings_client object
+#'   \item \code{email} - Provide an email so that your usage of the API can
+#'   be tracked
 #'   \item \code{verbose} - Logical
 #'   \item \code{debug} - Logical
 #' }
@@ -46,8 +48,10 @@
 #'
 #' \code{getAnnotations(ids, fields, ..., return.as)}
 #' \itemize{
-#'   \item \code{id}, \code{ids} - An id (character) or a (character) vector of ids
-#'   \item \code{fields} - Provide an email so that your usage of the API can be tracked
+#'   \item \code{id}, \code{ids} - An id (character) or a (character) vector
+#'   of ids
+#'   \item \code{fields} - Provide an email so that your usage of the API can
+#'   be tracked
 #'   \item \code{...} - Additional parameters for the API. See API reference
 #'   \item \code{return.as} - data.frame, records or text
 #' }
@@ -57,10 +61,12 @@
 #'
 #' \code{queryMany(qterms, scopes, ..., return.as)}
 #' \itemize{
-#'   \item \code{q}, \code{qterms} - A query (character) or a (character) vector of query terms (qterms)
+#'   \item \code{q}, \code{qterms} - A query (character) or a (character)
+#'   vector of query terms (qterms)
 #'   \item \code{scopes} - A scope or vector of scopes
 #'   \item \code{...} - Additional parameters for the API. See API reference
-#'   \item \code{fetch_all} - This returns a list of _all_ results for a query, regardless of \code{return.as}. See the API documentation.
+#'   \item \code{fetch_all} - This returns a list of _all_ results for a
+#'   query, regardless of \code{return.as}. See the API documentation.
 #'   \item \code{return.as} - data.frame, records or text
 #' }
 #' @examples
@@ -69,7 +75,8 @@
 #' gene_client$getAnnotation("1017")
 #' gene_client$getAnnotations(c("1017", "1018"))
 #' gene_client$query("sp2")
-#' gene_client$queryMany(c("1053_at", "117_at"), scopes="reporter", species="human")
+#' gene_client$queryMany(c("1053_at", "117_at"), scopes = "reporter",
+#'                       species = "human")
 #'
 #' @name BioThingsR6
 #' @importFrom R6 R6Class
@@ -97,7 +104,8 @@ BioThingsR6 <- R6Class("BioThingsR6",
         if (api_config %in% names(biothings_clients))
           self$api <- biothings_clients[[api_config]]
         else
-          stop("The provided key is not available in the biothings_clients config.")
+          stop("The provided key is not available in the biothings_clients ",
+               "config.")
       else
         stop("Error with the provided api_config argument.")
     },
@@ -142,7 +150,8 @@ BioThingsR6 <- R6Class("BioThingsR6",
         results <- resl$hits
         if ("_scroll_id" %in% names(resl)) {
           if (return.as != "records" & self$verbose)
-            message("fetch_all requires the return type to be records. Returning records.")
+            message("fetch_all requires the return type to be records. ",
+                    "Returning records.")
 
           if (self$verbose)
             message("Getting additional records. Took: ", resl$took)
@@ -151,7 +160,8 @@ BioThingsR6 <- R6Class("BioThingsR6",
           params$scroll_id <- resl[["_scroll_id"]]
 
           while (scroll_id) {
-            scroll <- private$.request.get(self$api$endpoints$query$path, params)
+            scroll <- private$.request.get(self$api$endpoints$query$path,
+                                           params)
             scroll <- .return.as(scroll, "records")[[1]]
 
             if (!("error" %in% names(scroll))) {
@@ -198,8 +208,10 @@ BioThingsR6 <- R6Class("BioThingsR6",
         out.li <- .return.as(out, "records")
 
         found <- sapply(out.li, function(x) is.null(x$notfound))
-        li_missing <- as.character(lapply(out.li[!found], function(x) x[['query']]))
-        li_query <- as.character(lapply(out.li[found], function(x) x[['query']]))
+        li_missing <- as.character(lapply(out.li[!found],
+                                          function(x) x[['query']]))
+        li_query <- as.character(lapply(out.li[found],
+                                        function(x) x[['query']]))
 
         #check duplication hits
         count <- as.list(table(li_query))
@@ -212,7 +224,8 @@ BioThingsR6 <- R6Class("BioThingsR6",
                     li_dup)
           }
           if (length('li_missing') > 0) {
-            sprintf('%f input query terms found dup hits:   %s', length(li_missing),
+            sprintf('%f input query terms found dup hits:   %s',
+                    length(li_missing),
                     li_missing)
           }
         }

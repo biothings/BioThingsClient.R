@@ -3,7 +3,9 @@
 
 version <- '0.1'
 
-#' BioThings - An S4 Class to access BioThings APIs.
+#' @title BioThings
+#'
+#' @description An S4 Class to access BioThings APIs.
 #'
 #' @slot clients A nested list of BioThings API configurations.
 #' @slot version The version of the BioThings package.
@@ -11,11 +13,13 @@ version <- '0.1'
 #' @slot debug logical.
 #'
 #' @return An S4 class object of the class Biothings.
-#' @export
+#' @export BioThings
+#' @exportClass BioThings
+#' @name BioThings
 #'
 #' @examples
 #' biothings <- new("BioThings")
-#' biothings@verbose <- FALSE # default is TRUE
+#' slot(biothings, "verbose") <- FALSE # default is TRUE
 #' biothings
 BioThings <- setClass("BioThings",
                       slots = list(clients = "list", version = "character",
@@ -33,8 +37,8 @@ validBiothingsObject <- function(object) {
   }
 
   if (length(slot(object, "clients")) < 1) {
-    errors[length(errors) + 1] <- paste0("clients object missing. Necessary to",
-                                         "define API interaction. clients ",
+    errors[length(errors) + 1] <- paste0("clients object missing. Necessary ",
+                                         "to define API interaction. clients ",
                                          "object: ", slot(object, "clients"))
   }
 
@@ -56,15 +60,15 @@ setGeneric(".request.get", signature = c("biothings"),
 #' @keywords internal
 setMethod(".request.get", c(biothings = "BioThings"),
           function(biothings, client, path, params = list()) {
-  client_config <- biothings@clients[[client]]
+  client_config <- slot(biothings, "clients")[[client]]
 
   url <- paste(client_config$base_url, path, sep = "/")
   headers <- c('User-Agent' = sprintf('R-httr_biothings_%s/httr.%s',
                                       client_config$user_agent,
                                       version))
 
-  if (exists('params')){
-    if (biothings@debug){
+  if (exists('params')) {
+    if (slot(biothings, "debug")) {
       res <- httr::GET(url, query = params, httr::verbose())
     } else {
       res <- httr::GET(url, query = params,
@@ -73,7 +77,7 @@ setMethod(".request.get", c(biothings = "BioThings"),
   }
   if (res$status_code != 200)
     stop("Request returned unexpected status code:\n",
-         paste(capture.output(print(res)), collapse="\n"))
+         paste(capture.output(print(res)), collapse = "\n"))
   httr::content(res, "text")
 })
 
@@ -86,7 +90,7 @@ setGeneric(".request.post", signature = c("biothings"),
 #' @keywords internal
 setMethod(".request.post", c(biothings = "BioThings"),
           function(biothings, client, path, params = list()) {
-  client_config <- biothings@clients[[client]]
+  client_config <- slot(biothings, "clients")[[client]]
 
   url <- paste(client_config$base_url, path, sep = "/")
   headers <- c(#'Content-Type' = 'application/x-www-form-urlencoded',
@@ -96,7 +100,7 @@ setMethod(".request.post", c(biothings = "BioThings"),
 
 
   if (exists('params')) {
-    if (biothings@debug) {
+    if (slot(biothings, "debug")) {
       res <- httr::POST(url, body = params,
                         config = httr::add_headers(headers),
                         httr::verbose())
@@ -117,8 +121,8 @@ setMethod(".request.post", c(biothings = "BioThings"),
 #' @keywords internal
 .repeated.query <- function(biothings, client, path, vecparams,
                             params = list()) {
-  client_config <- biothings@clients[[client]]
-  verbose <- biothings@verbose
+  client_config <- slot(biothings, "clients")[[client]]
+  verbose <- slot(biothings, "verbose")
   vecparams.split <- .transpose.nested.list(lapply(vecparams, .splitBySize,
     maxsize = client_config$step))
   if (length(vecparams.split) <= 1) {
@@ -126,13 +130,13 @@ setMethod(".request.post", c(biothings = "BioThings"),
   }
   vecparams.splitcollapse <- lapply(vecparams.split, lapply, .collapse)
   start <- TRUE
-  reslist <- lapply(vecparams.splitcollapse, function (vecparams_) {
+  reslist <- lapply(vecparams.splitcollapse, function(vecparams_) {
     query_params <- c(params, vecparams_)
 
     if (!start)
       Sys.sleep(client_config$delay)
     else
-      start <<- FALSE
+      assign("start", FALSE, envir = parent.frame())
 
     .request.post(biothings = biothings, client = client, path = path,
                   params = query_params)

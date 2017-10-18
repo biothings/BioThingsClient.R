@@ -8,21 +8,25 @@ Maintainer: Thomas Johnson <thomascjohnson@gmail.com>
 Authors@R: c(person("Thomas", "Johnson",
     email = "thomascjohnson@gmail.com", role = c("aut", "cre")))
 Depends:
-    R (>= 3.0.1)
+    R (>= 3.4)
 License: BSD | file LICENSE
 LazyData: true
 Imports:
-    httr,
     jsonlite,
     plyr,
     magrittr,
     methods,
     Hmisc,
-    R6
+    R6,
+    stats,
+    utils,
+    httr
 Suggests:
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
 Roxygen: list(wrap = FALSE)
-Collate: 
+Collate:
     'biothings_client.R'
     'biothings-package.R'
     'utils.R'
@@ -36,3 +40,5 @@ Collate:
     'metadata.R'
     'query.R'
 RoxygenNote: 6.0.1
+VignetteBuilder: knitr
+biocViews: VariantAnnotation, Annotation, GenomicVariation

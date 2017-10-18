@@ -29,7 +29,7 @@ setGeneric("getMetadata", signature = c("biothings"),
 #' @aliases getMetadata,BioThings,BioThings-method
 setMethod("getMetadata", c(biothings = "BioThings"),
           function(client, ..., biothings) {
-  client_config <- biothings@clients[[client]]
+  client_config <- slot(biothings, "clients")[[client]]
   params <- list(...)
   res <- .request.get(biothings, client,
                       client_config$endpoints$metadata$path, params)
@@ -73,7 +73,7 @@ setGeneric("getFields", signature = c("biothings"),
 #' @aliases getFields,BioThings,BioThings-method
 setMethod("getFields", c(biothings = "BioThings"),
           function(client, ..., biothings) {
-  client_config <- biothings@clients[[client]]
+  client_config <- slot(biothings, "clients")[[client]]
   params <- list(...)
   res <- .request.get(biothings, client,
                       client_config$endpoints$metadata_fields$path, params)

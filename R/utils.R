@@ -106,7 +106,8 @@
   return.as <- match.arg(return.as)
   if (return.as == "data.frame") {
     df <- .json2df(gene_obj)
-    df <- plyr::rename(df, c("X_id" = "_id"))
+    if ("X_id" %in% names(df))
+      df <- plyr::rename(df, c("X_id" = "_id"))
     df$`_version` <- NULL
     return(df)
   } else if (return.as == "text") {

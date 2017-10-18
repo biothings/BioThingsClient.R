@@ -5,7 +5,8 @@
 #' @title Get items from BioThings APIs
 #'
 #' @description
-#' Use gene, taxon, variant, chemical and other IDs to get annotation information from BioThings APIs.
+#' Use gene, taxon, variant, chemical and other IDs to get annotation
+#' information from BioThings APIs.
 #'
 #' @param thing character.
 #' @param things vector.
@@ -52,7 +53,7 @@ setMethod("getThing", signature = c(biothings = "BioThings"),
   # return.as <- match.arg(return.as)
   params <- list(...)
   params$fields <- .collapse(fields)
-  client_config <- biothings@clients[[client]]
+  client_config <- slot(biothings, "clients")[[client]]
   res <- .request.get(biothings, client,
                       paste(client_config$endpoints$annotation$path,
                             thing, sep = "/"), params)
@@ -81,7 +82,7 @@ setGeneric("getThings", signature = c("biothings"),
 setMethod("getThings", signature = c(biothings = "BioThings"),
           function(things, client, fields, ..., return.as,
                    biothings) {
-  client_config <- biothings@clients[[client]]
+  client_config <- slot(biothings, "clients")[[client]]
   params <- list()
   if (exists('fields')) {
     params <- list(...)

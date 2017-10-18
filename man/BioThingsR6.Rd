@@ -4,9 +4,9 @@
 \alias{BioThingsR6}
 \title{BioThings R6 Class}
 \description{
-This class provides a flexible, configuration-based client for the BioThings
-APIs. The user can pass a configuration file or a key for the provided
-configuration in the biothings_client object.
+This class provides a flexible, configuration-based client for the
+BioThings APIs. The user can pass a configuration file or a key for the
+provided configuration in the biothings_client object.
 
 A configuration (for example, the Gene API) takes the form:
 
@@ -19,8 +19,8 @@ append(list(
                    "annotation" = list(path = "gene",
                                        return_types = c("records", "text",
                                                         "data.frame"),
-                                       fields = c("symbol", "name", "taxid",
-                                                  "entrezgene")),
+                                       fields = c("symbol", "name",
+                                                  "taxid", "entrezgene")),
                    "metadata" = list(path = "metadata"),
                    "metadata_fields" = list(path = "metadata/fields"))),
   common_kwargs
@@ -37,8 +37,10 @@ common_kwargs <- list(delay = 1, step = 1000, max_query = 1000)
 
 \code{BioThings$new(api_config, email, verbose, debug)}
 \itemize{
-  \item \code{api_config} - This can be a api config as shown above or a key (character) for the biothings_client object
-  \item \code{email} - Provide an email so that your usage of the API can be tracked
+  \item \code{api_config} - This can be a api config as shown above or a
+  key (character) for the biothings_client object
+  \item \code{email} - Provide an email so that your usage of the API can
+  be tracked
   \item \code{verbose} - Logical
   \item \code{debug} - Logical
 }
@@ -50,8 +52,10 @@ common_kwargs <- list(delay = 1, step = 1000, max_query = 1000)
 
 \code{getAnnotations(ids, fields, ..., return.as)}
 \itemize{
-  \item \code{id}, \code{ids} - An id (character) or a (character) vector of ids
-  \item \code{fields} - Provide an email so that your usage of the API can be tracked
+  \item \code{id}, \code{ids} - An id (character) or a (character) vector
+  of ids
+  \item \code{fields} - Provide an email so that your usage of the API can
+  be tracked
   \item \code{...} - Additional parameters for the API. See API reference
   \item \code{return.as} - data.frame, records or text
 }
@@ -63,10 +67,12 @@ common_kwargs <- list(delay = 1, step = 1000, max_query = 1000)
 
 \code{queryMany(qterms, scopes, ..., return.as)}
 \itemize{
-  \item \code{q}, \code{qterms} - A query (character) or a (character) vector of query terms (qterms)
+  \item \code{q}, \code{qterms} - A query (character) or a (character)
+  vector of query terms (qterms)
   \item \code{scopes} - A scope or vector of scopes
   \item \code{...} - Additional parameters for the API. See API reference
-  \item \code{fetch_all} - This returns a list of _all_ results for a query, regardless of \code{return.as}. See the API documentation.
+  \item \code{fetch_all} - This returns a list of _all_ results for a
+  query, regardless of \code{return.as}. See the API documentation.
   \item \code{return.as} - data.frame, records or text
 }
 }
@@ -77,6 +83,7 @@ gene_client <- BioThingsR6$new("gene")
 gene_client$getAnnotation("1017")
 gene_client$getAnnotations(c("1017", "1018"))
 gene_client$query("sp2")
-gene_client$queryMany(c("1053_at", "117_at"), scopes="reporter", species="human")
+gene_client$queryMany(c("1053_at", "117_at"), scopes = "reporter",
+                      species = "human")
 
 }
