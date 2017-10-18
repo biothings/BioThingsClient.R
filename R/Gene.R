@@ -11,6 +11,7 @@ setGeneric("getGene", signature = c("biothings"),
   standardGeneric("getGene")
 })
 
+#' @rdname getThing-methods
 setMethod("getGene", c(biothings = "BioThings"),
           function(geneid, fields = c("symbol", "name", "taxid", "entrezgene"),
                    ..., return.as = c("records", "text", "data.frame"),
@@ -20,6 +21,7 @@ setMethod("getGene", c(biothings = "BioThings"),
            biothings = biothings)
 })
 
+#' @rdname getThing-methods
 setMethod("getGene", c(biothings = "missing"),
           function(geneid, fields = c("symbol", "name" ,"taxid", "entrezgene"),
                    ..., return.as = c("records", "text", "data.frame"),
@@ -41,6 +43,7 @@ setGeneric("getGenes", signature = c("biothings"),
   standardGeneric("getGenes")
 })
 
+#' @rdname getThing-methods
 setMethod("getGenes", c(biothings = "BioThings"),
           function(geneids, fields = c("symbol", "name", "taxid", "entrezgene"),
                    ..., return.as = c("records", "text", "data.frame"),
@@ -50,6 +53,7 @@ setMethod("getGenes", c(biothings = "BioThings"),
             biothings = biothings)
 })
 
+#' @rdname getThing-methods
 setMethod("getGenes", c(biothings = "missing"),
           function(geneids, fields = c("symbol", "name", "taxid", "entrezgene"),
                    ..., return.as = c("records", "text", "data.frame"),

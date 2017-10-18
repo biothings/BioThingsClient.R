@@ -4,17 +4,30 @@
 
 #' @title Get items from BioThings APIs
 #'
+#' @description
+#' Use gene, taxon, variant, chemical and other IDs to get annotation information from BioThings APIs.
+#'
 #' @param thing character.
 #' @param things vector.
-#' @param client character.
-#' @param fields vector.
+#' @param chemid character.
+#' @param chemids vector.
+#' @param geneid character.
+#' @param geneids vector.
+#' @param taxonid character.
+#' @param taxonids vector.
+#' @param variantid character.
+#' @param variantids vector.
+#' @param client A BioThings client name
+#' @param fields Specify fields to receive from API
+#' @param ... Other parameters to pass to API
 #' @param return.as character.
 #' @param biothings BioThings.
 #'
-#' @name getThing
-#' @rdname getThing-methods
 #' @return The API response in the form of the provided argument return.as
-#' @exportMethod getThing
+#'
+#' @export
+#' @docType methods
+#' @rdname getThing-methods
 #'
 #' @examples
 #' #Equivalent:
@@ -33,6 +46,7 @@ setGeneric("getThing", signature = c("biothings"),
   standardGeneric("getThing")
 })
 
+#' @rdname getThing-methods
 setMethod("getThing", signature = c(biothings = "BioThings"),
           function(thing, client, fields, ..., return.as, biothings) {
   # return.as <- match.arg(return.as)
@@ -45,6 +59,7 @@ setMethod("getThing", signature = c(biothings = "BioThings"),
   .return.as(res, return.as = return.as)
 })
 
+#' @rdname getThing-methods
 setMethod("getThing", c(biothings = "missing"),
           function(thing, client, fields, ..., return.as, biothings) {
   biothings <- BioThings()
@@ -62,6 +77,7 @@ setGeneric("getThings", signature = c("biothings"),
   standardGeneric("getThings")
 })
 
+#' @rdname getThing-methods
 setMethod("getThings", signature = c(biothings = "BioThings"),
           function(things, client, fields, ..., return.as,
                    biothings) {
@@ -82,6 +98,7 @@ setMethod("getThings", signature = c(biothings = "BioThings"),
   .return.as(res, return.as = return.as)
 })
 
+#' @rdname getThing-methods
 setMethod("getThings", c(biothings = "missing"),
           function(things, client, fields, ..., return.as,
                    biothings) {

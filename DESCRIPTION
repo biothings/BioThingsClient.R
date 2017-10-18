@@ -33,5 +33,6 @@ Collate:
     'Gene.R'
     'Taxon.R'
     'Variant.R'
+    'metadata.R'
     'query.R'
 RoxygenNote: 6.0.1

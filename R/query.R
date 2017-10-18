@@ -3,18 +3,23 @@
 # query -------------------------------------------------------------------
 
 #' @title query
+#'
+#' @description
 #' Retrieve results from the query endpoint of BioThings APIs
 #'
 #' @param q A query string
 #' @param qterms A vector of query strings
 #' @param client A BioThings client name
+#' @param scopes One or more fields (separated by comma) as the search "scopes"
 #' @param ... Any parameters to pass to API
 #' @param fetch_all This returns a list of _all_ results for a query, regardless of \code{return.as}. See the API documentation.
 #' @param return.as Type of return value
 #' @param biothings An S4 class BioThings object
 #' @return Returns the API result as the provided return.as type
-#' @name query
-#' @exportMethod query
+#'
+#' @export query
+#' @docType methods
+#' @rdname query-methods
 #'
 #' @examples
 #' query(q="NM_013993", client = "gene")
@@ -24,6 +29,7 @@ setGeneric("query", signature = c("biothings"),
   standardGeneric("query")
 })
 
+#' @rdname query-methods
 setMethod("query", c(biothings = "BioThings"),
           function(q, client, ..., fetch_all = FALSE,
                    return.as = c("records", "data.frame", "text"), biothings) {
@@ -79,6 +85,7 @@ setMethod("query", c(biothings = "BioThings"),
   }
 })
 
+#' @rdname query-methods
 setMethod("query", c(biothings = "missing"),
           function(q, client, ...,  fetch_all, return.as, biothings) {
   biothings <- BioThings()
@@ -88,7 +95,7 @@ setMethod("query", c(biothings = "missing"),
 
 # queryMany ---------------------------------------------------------------
 
-#' @rdname query
+#' @rdname query-methods
 #' @exportMethod queryMany
 setGeneric("queryMany", signature = c("biothings"),
            function(qterms, client, scopes = NULL, ...,
@@ -96,6 +103,7 @@ setGeneric("queryMany", signature = c("biothings"),
   standardGeneric("queryMany")
 })
 
+#' @rdname query-methods
 setMethod("queryMany", c(biothings = "BioThings"),
           function(qterms, client, scopes = NULL, ...,
                    return.as = c("records", "data.frame", "text"),
@@ -156,6 +164,7 @@ setMethod("queryMany", c(biothings = "BioThings"),
   }
 })
 
+#' @rdname query-methods
 setMethod("queryMany", c(biothings = "missing"),
           function(qterms, client, scopes = NULL, ...,
                    return.as = c("records", "data.frame", "text"),

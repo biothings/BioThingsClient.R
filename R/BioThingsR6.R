@@ -228,6 +228,16 @@ BioThingsR6 <- R6Class("BioThingsR6",
           return(out)
         }
       }
+    },
+    getMetadata = function(...) {
+      params <- list(...)
+      res <- private$.request.get(self$api$endpoints$metadata$path, params)
+      .return.as(res, "records")
+    },
+    getFields = function(...) {
+      params <- list(...)
+      res <- private$.request.get(self$api$endpoints$metadata$path, params)
+      .return.as(res, "records")
     }
   ),
   private = list(
