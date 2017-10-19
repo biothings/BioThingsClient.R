@@ -2,7 +2,7 @@ Package: biothings
 Type: Package
 Title: BioThings (http://github.com/thomascjohnson/biothings)
 Description: Provides access to Biothings APIs. See biothings.io for more
-information about APIs.
+    information about APIs.
 Version: 0.1.0
 Author: Thomas Johnson <thomascjohnson@gmail.com>
 Maintainer: Thomas Johnson <thomascjohnson@gmail.com>
