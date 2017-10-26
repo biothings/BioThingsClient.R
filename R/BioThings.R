@@ -1,13 +1,13 @@
 #' @include utils.R
 #' @include biothings_client.R
 
-version <- '0.1'
+btversion <- '0.1'
 
 #' @title BioThings
 #'
 #' @description An S4 Class to access BioThings APIs.
 #'
-#' @slot clients A nested list of BioThings API configurations.
+#' @slot client A client configuration list.
 #' @slot version The version of the BioThings package.
 #' @slot verbose logical.
 #' @slot debug logical.
@@ -15,18 +15,16 @@ version <- '0.1'
 #' @return An S4 class object of the class Biothings.
 #' @export BioThings
 #' @exportClass BioThings
-#' @name BioThings
+#' @name BioThings-class
+#' @rdname BioThings-class
 #'
 #' @examples
-#' biothings <- new("BioThings")
+#' biothings <- BioThings("gene")
 #' slot(biothings, "verbose") <- FALSE # default is TRUE
 #' biothings
 BioThings <- setClass("BioThings",
-                      slots = list(clients = "list", version = "character",
-                                   verbose = "logical", debug = "logical"),
-                      prototype = list(clients = biothings_clients,
-                                       version = version, verbose = TRUE,
-                                       debug = FALSE))
+                      slots = list(client = "list", version = "character",
+                                   verbose = "logical", debug = "logical"))
 
 #' @keywords internal
 validBiothingsObject <- function(object) {
@@ -37,8 +35,8 @@ validBiothingsObject <- function(object) {
   }
 
   if (length(slot(object, "clients")) < 1) {
-    errors[length(errors) + 1] <- paste0("clients object missing. Necessary ",
-                                         "to define API interaction. clients ",
+    errors[length(errors) + 1] <- paste0("client object missing. Necessary ",
+                                         "to define API interaction. client ",
                                          "object: ", slot(object, "clients"))
   }
 
@@ -52,15 +50,34 @@ validBiothingsObject <- function(object) {
 setValidity("BioThings", validBiothingsObject)
 
 #' @keywords internal
+setMethod("initialize",
+          signature = "BioThings",
+          function(.Object, client, version = version,
+                   verbose = TRUE, debug = FALSE) {
+  if (is.character(client))
+    slot(.Object, "client") <- biothings_clients[[tolower(client)]]
+  else if (is.list(client))
+    slot(.Object, "client") <- client
+  else
+    stop("Invalid client argument value.",
+         "Available clients from biothings_clients object:\n",
+         paste(names(biothings_clients), collapse = "\n"))
+  slot(.Object, "version") <- btversion
+  slot(.Object, "verbose") <- verbose
+  slot(.Object, "debug") <- debug
+  return(.Object)
+})
+
+#' @keywords internal
 setGeneric(".request.get", signature = c("biothings"),
-           function(biothings, client, path, params = list()) {
+           function(biothings, path, params = list()) {
   standardGeneric(".request.get")
 })
 
 #' @keywords internal
 setMethod(".request.get", c(biothings = "BioThings"),
-          function(biothings, client, path, params = list()) {
-  client_config <- slot(biothings, "clients")[[client]]
+          function(biothings, path, params = list()) {
+  client_config <- slot(biothings, "client")
 
   url <- paste(client_config$base_url, path, sep = "/")
   headers <- c('User-Agent' = sprintf('R-httr_biothings_%s/httr.%s',
@@ -83,14 +100,14 @@ setMethod(".request.get", c(biothings = "BioThings"),
 
 #' @keywords internal
 setGeneric(".request.post", signature = c("biothings"),
-           function(biothings, client, path, params = list()) {
+           function(biothings, path, params = list()) {
   standardGeneric(".request.post")
 })
 
 #' @keywords internal
 setMethod(".request.post", c(biothings = "BioThings"),
-          function(biothings, client, path, params = list()) {
-  client_config <- slot(biothings, "clients")[[client]]
+          function(biothings, path, params = list()) {
+  client_config <- slot(biothings, "client")
 
   url <- paste(client_config$base_url, path, sep = "/")
   headers <- c(#'Content-Type' = 'application/x-www-form-urlencoded',
@@ -119,9 +136,8 @@ setMethod(".request.post", c(biothings = "BioThings"),
 })
 
 #' @keywords internal
-.repeated.query <- function(biothings, client, path, vecparams,
-                            params = list()) {
-  client_config <- slot(biothings, "clients")[[client]]
+.repeated.query <- function(biothings, path, vecparams, params = list()) {
+  client_config <- slot(biothings, "client")
   verbose <- slot(biothings, "verbose")
   vecparams.split <- .transpose.nested.list(lapply(vecparams, .splitBySize,
     maxsize = client_config$step))
@@ -138,8 +154,7 @@ setMethod(".request.post", c(biothings = "BioThings"),
     else
       assign("start", FALSE, envir = parent.frame())
 
-    .request.post(biothings = biothings, client = client, path = path,
-                  params = query_params)
+    .request.post(biothings = biothings, path = path, params = query_params)
   })
 
   rm(start)
@@ -149,7 +164,3 @@ setMethod(".request.post", c(biothings = "BioThings"),
   #return(restext)
   reslist
 }
-#
-# setMethod("metadata", c(x="BioThings"), function(x, ...) {
-#   .return.as(.request.get(x, client, "/metadata"), "records")
-# })

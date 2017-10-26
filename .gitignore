@@ -12,6 +12,7 @@
 /*.Rcheck/
 # RStudio files
 .Rproj.user/
+.Rproj.user2/
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf

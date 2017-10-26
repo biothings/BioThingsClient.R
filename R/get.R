@@ -1,6 +1,6 @@
 #' @include BioThings.R
 
-# getThing ----------------------------------------------------------------
+# btGet ----------------------------------------------------------------
 
 #' @title Get items from BioThings APIs
 #'
@@ -8,102 +8,70 @@
 #' Use gene, taxon, variant, chemical and other IDs to get annotation
 #' information from BioThings APIs.
 #'
-#' @param thing character.
-#' @param things vector.
-#' @param chemid character.
-#' @param chemids vector.
-#' @param geneid character.
-#' @param geneids vector.
-#' @param taxonid character.
-#' @param taxonids vector.
-#' @param variantid character.
-#' @param variantids vector.
-#' @param client A BioThings client name
+#' @param biothings BioThings object or character .
+#' @param ids character.
 #' @param fields Specify fields to receive from API
 #' @param ... Other parameters to pass to API
 #' @param return.as character.
-#' @param biothings BioThings.
 #'
 #' @return The API response in the form of the provided argument return.as
 #'
 #' @export
 #' @docType methods
-#' @rdname getThing-methods
+#' @rdname btGet-methods
 #'
 #' @examples
 #' #Equivalent:
-#' getThing("1017", "gene", fields = c("symbol","name","taxid","entrezgene"),
-#'           return.as = "text")
-#' getGene("1017", return.as = "text")
 #'
-#' # Also equivalent
-#' getThings(c("1017","1018","ENSG00000148795"), "gene",
-#'           fields = c("symbol","name","taxid","entrezgene"),
-#'           return.as = "text")
-#' getGenes(c("1017","1018","ENSG00000148795"), return.as = "text")
-setGeneric("getThing", signature = c("biothings"),
-           function(thing, client, fields, ..., return.as,
-                    biothings) {
-  standardGeneric("getThing")
+#' btGet("gene", "1017", fields = c("symbol","name","taxid","entrezgene"),
+#'       return.as = "text")
+setGeneric("btGet", signature = c("biothings"),
+           function(biothings, ids, fields, ..., return.as) {
+  standardGeneric("btGet")
 })
 
-#' @rdname getThing-methods
-setMethod("getThing", signature = c(biothings = "BioThings"),
-          function(thing, client, fields, ..., return.as, biothings) {
-  # return.as <- match.arg(return.as)
+#' @rdname btGet-methods
+setMethod("btGet", signature = c(biothings = "BioThings"),
+          function(biothings, ids, fields, ..., return.as) {
   params <- list(...)
-  params$fields <- .collapse(fields)
-  client_config <- slot(biothings, "clients")[[client]]
-  res <- .request.get(biothings, client,
-                      paste(client_config$endpoints$annotation$path,
-                            thing, sep = "/"), params)
-  .return.as(res, return.as = return.as)
-})
+  if (!missing(fields))
+    params$fields <- .collapse(fields)
+  if (missing(return.as))
+    return.as <- NULL
+  if (is.character(biothings))
+    biothings <- BioThings(biothings)
+  client_config <- slot(biothings, "client")
 
-#' @rdname getThing-methods
-setMethod("getThing", c(biothings = "missing"),
-          function(thing, client, fields, ..., return.as, biothings) {
-  biothings <- BioThings()
-  getThing(thing, client, fields, ...,
-           return.as = return.as, biothings = biothings)
-})
-
-
-# getThings ---------------------------------------------------------------
-#' @rdname getThing-methods
-#' @exportMethod getThings
-setGeneric("getThings", signature = c("biothings"),
-           function(things, client, fields, ..., return.as,
-                    biothings) {
-  standardGeneric("getThings")
-})
-
-#' @rdname getThing-methods
-setMethod("getThings", signature = c(biothings = "BioThings"),
-          function(things, client, fields, ..., return.as,
-                   biothings) {
-  client_config <- slot(biothings, "clients")[[client]]
-  params <- list()
-  if (exists('fields')) {
-    params <- list(...)
-    params[['fields']] <- .collapse(fields)
+  if (length(ids) == 1) {
+    res <- .request.get(biothings,
+                        paste(client_config$endpoints$annotation$path,
+                              ids, sep = "/"), params)
+  } else if (length(ids) > 1) {
     params <- lapply(params, .collapse)
+    vecparams <- list(ids = .uncollapse(ids))
+
+    res <- .repeated.query(biothings,
+                           client_config$endpoints$annotation$path,
+                           vecparams = vecparams, params = params)
   }
-
-  vecparams <- list(ids = .uncollapse(things))
-
-  res <- .repeated.query(biothings, client,
-                         client_config$endpoints$annotation$path,
-                         vecparams = vecparams, params = params)
-
   .return.as(res, return.as = return.as)
 })
 
-#' @rdname getThing-methods
-setMethod("getThings", c(biothings = "missing"),
-          function(things, client, fields, ..., return.as,
-                   biothings) {
-  biothings <- BioThings()
-  getThings(things, client, fields, ..., return.as = return.as,
-            biothings = biothings)
+#' @rdname btGet-methods
+setMethod("btGet", signature = c(biothings = "character"),
+          function(biothings, ids, fields, ..., return.as) {
+  biothings <- BioThings(biothings)
+  btGet(biothings, ids = ids, fields = fields, ..., return.as = return.as)
+})
+
+#' @rdname btGet-methods
+setMethod("btGet", c(biothings = "missing"),
+          function(biothings, ids, fields, ..., return.as) {
+  message("No BioThings client object provided.")
+  message("Available clients:")
+  message(paste(names(biothings_clients), collapse = "\n"))
+  client <- readline("Enter a client name: ")
+  btclient <- BioThings(client = biothings_clients[[client]])
+  btGet(biothings = btclient, ids = ids, fields = fields, ...,
+        return.as = return.as)
 })

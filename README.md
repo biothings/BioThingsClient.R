@@ -7,28 +7,28 @@ This is an R package that provides access to the [BioThings APIs](biothings.io):
 * [Variants](http://myvariant.info/)
 * [Genes](http://mygene.info/)
 
-As new APIs are added, this package will be updated to provide access to them.
+As new APIs are added, this package will be updated to provide access to them. If there is a new API and the package still hasn't been updated, you can create a new configuration object that will allow you to access such new API.
 
 ## Usage
-The package is intended to be simple to use, without the need to instantiate a class object. For a given API and relevant id, the user can make requests from the API as follows:
+The package is intended to be simple to use, without the need to instantiate a class object (though you can! Particularly if you have an updated API configuration). For a given API and relevant id, the user can make requests from the API as follows:
 ```
-getGene("1017")
-
-getTaxon("9606")
-```
-
-Requests for multiple ids at once can be done in this way:
-```
-getTaxons(c("9606", "10030"))
-
-getChemicals(c("CALDTVBHJMBRTM-UHFFFAOYSA-N", "ZKLPARSLTMPFCP-UHFFFAOYSA-N"))
+gene_client <- BioThings("gene")
+btGet(gene_client, "1017")
+# or:
+btGet("gene", "1017")
+# or:
+btGet("gene", "c("9606", "10030")")
+taxon_client <- BioThings("taxon")
+btGet(taxon_client, "9606")
+# or:
+btGet("taxon", "9606")
 ```
 
 The query endpoints of the APIs can be accessed with the query and queryMany methods:
 ```
-query("drugbank.name:celecoxib", "chem")
+btQuery("chem", "drugbank.name:celecoxib")
 
-queryMany(c("rs58991260", "rs2500"), "variant")
+btQuery("variant", c("rs58991260", "rs2500"))
 ```
 
-There are some issues with requesting data frames for certain APIs and endpoints. Some chemical responses are so large, for example, that fromJSON will hang. This will be resolved in coming releases, but for now avoid requesting data frames without specifying certain fields.
+There are some issues with requesting data frames for certain APIs and endpoints. Some chemical responses are so large that fromJSON will hang. This will be resolved in coming releases, but for now avoid requesting data frames without specifying certain fields.

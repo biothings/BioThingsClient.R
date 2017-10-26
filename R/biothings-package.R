@@ -14,7 +14,7 @@
 #' @importFrom methods new
 #' @importFrom methods slot
 #' @importFrom stats setNames
-#' @importFrom R6 R6Class
+#' @importFrom methods slot<-
 #' @import httr
 #' @import stats
 #' @import utils
