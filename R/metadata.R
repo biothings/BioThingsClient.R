@@ -1,8 +1,8 @@
 #' @include BioThings.R
 
-# getMetadata -------------------------------------------------------------
+# btMetadata -------------------------------------------------------------
 
-#' @title getMetadata
+#' @title btMetadata
 #'
 #' @description
 #' Get metadata information from BioThings API metadata endpoints
@@ -15,38 +15,37 @@
 #'
 #' @export
 #' @docType methods
-#' @rdname getMetadata-methods
+#' @rdname btMetadata-methods
 #'
 #' @examples
-#' metadata <- getMetadata("gene")
+#' metadata <- btMetadata("gene")
 #' head(metadata)
-setGeneric("getMetadata", signature = c("biothings"),
+setGeneric("btMetadata", signature = c("biothings"),
            function(client, ..., biothings) {
-  standardGeneric("getMetadata")
+  standardGeneric("btMetadata")
 })
 
-#' @rdname getMetadata-methods
-#' @aliases getMetadata,BioThings,BioThings-method
-setMethod("getMetadata", c(biothings = "BioThings"),
+#' @rdname btMetadata-methods
+#' @aliases btMetadata,BioThings,BioThings-method
+setMethod("btMetadata", c(biothings = "BioThings"),
           function(client, ..., biothings) {
-  client_config <- slot(biothings, "clients")[[client]]
+  client_config <- slot(biothings, "client")
   params <- list(...)
-  res <- .request.get(biothings, client,
-                      client_config$endpoints$metadata$path, params)
+  res <- .request.get(biothings, client_config$endpoints$metadata$path, params)
   .return.as(res, "records")
 })
 
-#' @rdname getMetadata-methods
-#' @aliases getMetadata,BioThings,BioThings-method
-setMethod("getMetadata", c(biothings = "missing"),
+#' @rdname btMetadata-methods
+#' @aliases btMetadata,BioThings,BioThings-method
+setMethod("btMetadata", c(biothings = "missing"),
           function(client, ..., biothings) {
-  biothings <- BioThings()
-  getMetadata(client, ..., biothings = biothings)
+  biothings <- BioThings(client)
+  btMetadata(client, ..., biothings = biothings)
 })
 
-# getFields ---------------------------------------------------------------
+# btFields ---------------------------------------------------------------
 
-#' @title getFields
+#' @title btFields
 #'
 #' @description
 #' Get field metadata information from BioThings API field metadata endpoints
@@ -59,31 +58,31 @@ setMethod("getMetadata", c(biothings = "missing"),
 #'
 #' @export
 #' @docType methods
-#' @rdname getFields-methods
+#' @rdname btFields-methods
 #'
 #' @examples
-#' fields <- getFields("gene")
+#' fields <- btFields("gene")
 #' head(fields)
-setGeneric("getFields", signature = c("biothings"),
+setGeneric("btFields", signature = c("biothings"),
            function(client, ..., biothings) {
-   standardGeneric("getFields")
+   standardGeneric("btFields")
 })
 
-#' @rdname getFields-methods
-#' @aliases getFields,BioThings,BioThings-method
-setMethod("getFields", c(biothings = "BioThings"),
+#' @rdname btFields-methods
+#' @aliases btFields,BioThings,BioThings-method
+setMethod("btFields", c(biothings = "BioThings"),
           function(client, ..., biothings) {
-  client_config <- slot(biothings, "clients")[[client]]
+  client_config <- slot(biothings, "client")
   params <- list(...)
-  res <- .request.get(biothings, client,
-                      client_config$endpoints$metadata_fields$path, params)
+  res <- .request.get(biothings, client_config$endpoints$metadata_fields$path,
+                      params)
   .return.as(res, "records")
 })
 
-#' @rdname getFields-methods
-#' @aliases getFields,BioThings,BioThings-method
-setMethod("getFields", c(biothings = "missing"),
+#' @rdname btFields-methods
+#' @aliases btFields,BioThings,BioThings-method
+setMethod("btFields", c(biothings = "missing"),
           function(client, ..., biothings) {
-  biothings <- BioThings()
-  getFields(client, ..., biothings = biothings)
+  biothings <- BioThings(client)
+  btFields(client, ..., biothings = biothings)
 })

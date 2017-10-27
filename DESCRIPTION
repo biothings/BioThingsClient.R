@@ -18,7 +18,6 @@ Imports:
     magrittr,
     methods,
     Hmisc,
-    R6,
     stats,
     utils,
     httr
@@ -27,17 +26,12 @@ Suggests:
     knitr,
     rmarkdown
 Roxygen: list(wrap = FALSE)
-Collate:
+Collate: 
     'biothings_client.R'
     'biothings-package.R'
     'utils.R'
     'BioThings.R'
-    'BioThingsR6.R'
     'get.R'
-    'Chemical.R'
-    'Gene.R'
-    'Taxon.R'
-    'Variant.R'
     'metadata.R'
     'query.R'
 RoxygenNote: 6.0.1
