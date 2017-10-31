@@ -24,11 +24,11 @@ btGet(taxon_client, "9606")
 btGet("taxon", "9606")
 ```
 
-The query endpoints of the APIs can be accessed with the query and queryMany methods:
+The query endpoints of the APIs can be accessed with the query method:
 ```
 btQuery("chem", "drugbank.name:celecoxib")
 
 btQuery("variant", c("rs58991260", "rs2500"))
 ```
 
-There are some issues with requesting data frames for certain APIs and endpoints. Some chemical responses are so large that fromJSON will hang. This will be resolved in coming releases, but for now avoid requesting data frames without specifying certain fields.
+There are some issues with requesting data frames for certain APIs and endpoints. Some chemical responses are so large that fromJSON will hang. Others have so many fields that the data frame will be heavily nested and hard to use. We recommend avoid requesting data frames without specifying certain fields.

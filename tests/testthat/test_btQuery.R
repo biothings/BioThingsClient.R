@@ -1,4 +1,4 @@
-context("Test btQuery and btQueryMany methods for each client type")
+context("Test btQuery")
 
 biothings <- BioThings("gene")
 

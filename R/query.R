@@ -24,16 +24,19 @@
 #' btQuery(gene_client, "NM_013993")
 setGeneric("btQuery", signature = c("biothings"),
            function(biothings, q, ..., fetch_all = FALSE, scopes,
-                    return.as = c("records", "data.frame", "text")) {
+                    return.as = "records") {
   standardGeneric("btQuery")
 })
 
 #' @rdname btQuery-methods
 setMethod("btQuery", c(biothings = "BioThings"),
           function(biothings, q, ..., fetch_all = FALSE, scopes,
-                   return.as = c("records", "data.frame", "text")) {
-  if (all.equal(return.as, c("records", "data.frame", "text")))
-    return.as = "records"
+                   return.as = "records") {
+  if (!(return.as %in% c("records", "data.frame", "text"))) {
+    warning(return.as, " not in in 'records', 'data.frame' or 'text'\n",
+            "Defaulting to 'records'")
+    return.as <- "records"
+  }
   if (is.character(biothings))
     biothings <- BioThings(biothings)
   client_config <- slot(biothings, "client")
@@ -93,7 +96,8 @@ setMethod("btQuery", c(biothings = "BioThings"),
 
 #' @rdname btQuery-methods
 setMethod("btQuery", c(biothings = "missing"),
-          function(biothings, q, ...,  fetch_all, scopes, return.as) {
+          function(biothings, q, ...,  fetch_all, scopes,
+                   return.as = "records") {
   message("No BioThings client object provided.")
   message("Available clients:")
   message(paste(names(biothings_clients), collapse = "\n"))
@@ -105,7 +109,8 @@ setMethod("btQuery", c(biothings = "missing"),
 
 #' @rdname btQuery-methods
 setMethod("btQuery", c(biothings = "character"),
-          function(biothings, q, ...,  fetch_all, scopes, return.as) {
+          function(biothings, q, ...,  fetch_all, scopes,
+                   return.as = "records") {
   biothings <- BioThings(biothings)
   btQuery(biothings, q, ..., fetch_all = fetch_all,
           return.as = return.as)
@@ -116,14 +121,19 @@ setMethod("btQuery", c(biothings = "character"),
 #' @keywords internal
 setGeneric("queryMany", signature = c("biothings"),
            function(biothings, qterms, scopes = NULL, ...,
-                    return.as = c("records", "data.frame", "text")) {
+                    return.as = "records") {
   standardGeneric("queryMany")
 })
 
 #' @keywords internal
 setMethod("queryMany", c(biothings = "BioThings"),
           function(biothings, qterms, scopes = NULL, ...,
-                   return.as = c("records", "data.frame", "text")) {
+                   return.as = "records") {
+  if (!(return.as %in% c("records", "data.frame", "text"))) {
+    warning(return.as, " not in in 'records', 'data.frame' or 'text'\n",
+            "Defaulting to 'records'")
+    return.as <- "records"
+  }
   client_config <- slot(biothings, "client")
   params <- list(...)
   vecparams <- list(q = .uncollapse(qterms))
@@ -181,8 +191,7 @@ setMethod("queryMany", c(biothings = "BioThings"),
 #' @keywords internal
 setMethod("queryMany", c(biothings = "missing"),
           function(biothings, qterms, scopes = NULL, ...,
-                   return.as = c("records", "data.frame", "text")) {
-
+                   return.as = "records") {
   message("No BioThings client object provided.")
   message("Available clients:")
   message(paste(names(biothings_clients), collapse = "\n"))

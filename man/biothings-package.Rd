@@ -18,4 +18,9 @@
 \author{
 \strong{Maintainer}: Thomas Johnson \email{thomascjohnson@gmail.com}
 
+Authors:
+\itemize{
+  \item Chunlei Wu \email{cwu@scripps.edu}
+}
+
 }
