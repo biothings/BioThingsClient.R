@@ -20,21 +20,21 @@ This package has S4 methods for accessing each API, as well as an R6 class that 
 Each API (gene, taxon, variant and chemical - when this was written) has a set of methods for getting annotations. Additionally, there are the generic `getThing` and `getThings` methods.
 
 
-#### Example: `getGene` and `getGenes`
-These methods can be used with a defined `BioThings` class object or with none (missing).
+#### Example: `btGet`
+These methods can be used with a defined `BioThings` class object or with just the name of a client from the `biothings_clients` object.
 
 With a defined `BioThings` object (see next example for output):
 ```
-> biothings <- BioThings()
+> biothings <- BioThings("Gene")
 > # Suppress messages
 > slot(biothings, "verbose") <- FALSE
-> getGene("1017", biothings = biothings)
-> getGenes(c("1017","1018","ENSG00000148795"), biothings = biothings)
+> btGet(biothings, "1017")
+> btGet(biothings, c("1017","1018","ENSG00000148795"))
 ```
 
 Without (output trimmed):
 ```
-> getGene("1017")
+> btGet("gene", "1017")
 [[1]]
 [[1]]$`_id`
 [1] "1017"

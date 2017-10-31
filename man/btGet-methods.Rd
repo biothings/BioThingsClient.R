@@ -8,13 +8,15 @@
 \alias{btGet,missing-method}
 \title{Get items from BioThings APIs}
 \usage{
-btGet(biothings, ids, fields, ..., return.as)
+btGet(biothings, ids, fields, ..., return.as = "records")
 
-\S4method{btGet}{BioThings}(biothings, ids, fields, ..., return.as)
+\S4method{btGet}{BioThings}(biothings, ids, fields, ...,
+  return.as = "records")
 
-\S4method{btGet}{character}(biothings, ids, fields, ..., return.as)
+\S4method{btGet}{character}(biothings, ids, fields, ...,
+  return.as = "records")
 
-\S4method{btGet}{missing}(biothings, ids, fields, ..., return.as)
+\S4method{btGet}{missing}(biothings, ids, fields, ..., return.as = "records")
 }
 \arguments{
 \item{biothings}{BioThings object or character .}

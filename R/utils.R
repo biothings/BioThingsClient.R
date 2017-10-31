@@ -76,12 +76,12 @@
     paste("[", x, "]")
 }
 
-#' @keywords internal
-.json2df <- function(x){
-   li <- lapply(x, jsonlite::fromJSON, flatten = TRUE)
-   df <- plyr::rbind.fill(li)
-   as.data.frame(df, stringsAsFactors = FALSE)
-}
+#' #' @keywords internal
+#' .json2df <- function(x){
+#'    li <- lapply(x, jsonlite::fromJSON, flatten = TRUE)
+#'    df <- plyr::rbind.fill(li)
+#'    as.data.frame(df, stringsAsFactors = FALSE)
+#' }
 
 #' @keywords internal
 .uncollapse <- function(x, sep = ",") {
@@ -101,14 +101,17 @@
 }
 
 #' @keywords internal
-.return.as <- function(gene_obj,
-                       return.as = c("data.frame", "records", "text")) {
-  return.as <- match.arg(return.as)
+.return.as <- function(gene_obj, return.as) {
   if (return.as == "data.frame") {
-    df <- .json2df(gene_obj)
-    if ("X_id" %in% names(df))
-      df <- plyr::rename(df, c("X_id" = "_id"))
-    df$`_version` <- NULL
+    # df <- .json2df(gene_obj)
+    # if ("X_id" %in% names(df))
+    #   df <- plyr::rename(df, c("X_id" = "_id"))
+    # df$`_version` <- NULL
+    df <- jsonlite::fromJSON(.json.batch.collapse(gene_obj),
+                             simplifyDataFrame = TRUE, flatten = TRUE)
+    if (is.list(df) & !is.data.frame(df))
+      warning("The response could not be coerced to a data frame due to the ",
+              "number of fields. Specify fields to produce a data frame.")
     return(df)
   } else if (return.as == "text") {
     return(.json.batch.collapse(gene_obj))

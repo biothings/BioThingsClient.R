@@ -8,17 +8,16 @@
 \alias{btQuery,character-method}
 \title{btQuery}
 \usage{
-btQuery(biothings, q, ..., fetch_all = FALSE, scopes,
-  return.as = c("records", "data.frame", "text"))
+btQuery(biothings, q, ..., fetch_all = FALSE, scopes, return.as = "records")
 
 \S4method{btQuery}{BioThings}(biothings, q, ..., fetch_all = FALSE, scopes,
-  return.as = c("records", "data.frame", "text"))
+  return.as = "records")
 
 \S4method{btQuery}{missing}(biothings, q, ..., fetch_all = FALSE, scopes,
-  return.as = c("records", "data.frame", "text"))
+  return.as = "records")
 
 \S4method{btQuery}{character}(biothings, q, ..., fetch_all = FALSE, scopes,
-  return.as = c("records", "data.frame", "text"))
+  return.as = "records")
 }
 \arguments{
 \item{biothings}{An S4 class BioThings object}
