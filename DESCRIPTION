@@ -3,8 +3,9 @@ Type: Package
 Title: BioThings (https://github.com/biothings/biothings_client.R)
 Description: Provides access to Biothings APIs. See biothings.io for more
     information about APIs. User can provide a custom client configuration or
-    use the provided configurations in the biothings_clients object.
-Version: 0.1.0
+    use the provided configurations in the biothings_clients object. The default
+    configuration provides access to the gene, variant, chemical and taxon APIs.
+Version: 0.99.0
 Author: Thomas Johnson <thomascjohnson@gmail.com>
 Maintainer: Thomas Johnson <thomascjohnson@gmail.com>
 Authors@R: c(person("Thomas", "Johnson",
@@ -13,7 +14,7 @@ Authors@R: c(person("Thomas", "Johnson",
     email = "cwu@scripps.edu", role = c("aut")))
 Depends:
     R (>= 3.4)
-License: Apache-2.0
+License: Apache License 2.0
 LazyData: true
 Imports:
     jsonlite,
