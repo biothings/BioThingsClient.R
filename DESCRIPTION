@@ -17,7 +17,6 @@ License: Apache-2.0
 LazyData: true
 Imports:
     jsonlite,
-    plyr,
     magrittr,
     methods,
     Hmisc,

@@ -13,11 +13,11 @@ The [BioThings APIs](http://biothings.io/) provide query and retrieve annoation 
 
 
 ## Package Usage
-This package has S4 methods for accessing each API, as well as an R6 class that is extensible so that as other APIs are made, a configuration can be passed and used to query and retrieve annotation from said APIs. The S4 methods are also extensible by providing a configuration object like the included `biothings_clients` configuration, and then using the `getThing` and `getThings` methods.
+This package has S4 methods for accessing each API, as well as an R6 class that is extensible so that as other APIs are made, a configuration can be passed and used to query and retrieve annotation from said APIs. The S4 methods are also extensible by providing a configuration object like the included `biothings_clients` configuration, and then using the `btGet`, `btQuery`, `btMetadata` and `btFields` methods.
 
 
 ### Annotations
-Each API (gene, taxon, variant and chemical - when this was written) has a set of methods for getting annotations. Additionally, there are the generic `getThing` and `getThings` methods.
+Each API (gene, taxon, variant and chemical - when this was written) has a set of methods for getting annotations. Additionally, there are the generic `btGet` method.
 
 
 #### Example: `btGet`
@@ -25,16 +25,16 @@ These methods can be used with a defined `BioThings` class object or with just t
 
 With a defined `BioThings` object (see next example for output):
 ```
-> biothings <- BioThings("Gene")
+> gene_client <- BioThings("gene")
 > # Suppress messages
-> slot(biothings, "verbose") <- FALSE
-> btGet(biothings, "1017")
-> btGet(biothings, c("1017","1018","ENSG00000148795"))
+> slot(gene_client, "verbose") <- FALSE
+> btGet(gene_client, "1017")
+> btGet(gene_client, c("1017","1018","ENSG00000148795"))
 ```
 
 Without (output trimmed):
 ```
-> btGet("gene", "1017")
+> btGet(gene_client, "1017") # btGet("gene", "1017") is equivalent
 [[1]]
 [[1]]$`_id`
 [1] "1017"
@@ -43,7 +43,7 @@ Without (output trimmed):
 [1] 22.32558
 ...(trimmed for space)
 
-> getGenes(c("1017","1018","ENSG00000148795"))
+> btGet(gene_client, c("1017","1018","ENSG00000148795"))
 [[1]]
 [[1]]$`_id`
 [1] "1017"
@@ -59,12 +59,12 @@ Without (output trimmed):
 ...(trimmed for space)
 ```
 
-Users can also specify `fields` and the type of return object. However, due to the size of some API responses, the default is a list (denoted by `"records"`) and we recommend only requesting `"data.frame"` when also specifing fields.
+Users can also specify `fields` and the type of return object. However, due to the size of some API responses, the default is a list (denoted by `"records"`) and we recommend only requesting `"data.frame"` when also specifing fields. Requesting `"data.frame"` will generally return a data frame, though it might be heavily nested and hard to use. So again, specify fields for the best results when requesting a data frame.
 
 ```
-> getGenes(c("1017","1018","ENSG00000148795"),
-           fields = c("symbol","name","taxid","entrezgene"),
-           return.as = "data.frame")
+> btGet(gene_client, c("1017","1018","ENSG00000148795"),
+        fields = c("symbol","name","taxid","entrezgene"),
+        return.as = "data.frame")
    _id   _score entrezgene                                           name  symbol
 1 1017 22.32558       1017                      cyclin dependent kinase 2    CDK2
 2 1018 22.32596       1018                      cyclin dependent kinase 3    CDK3
@@ -77,13 +77,13 @@ Users can also specify `fields` and the type of return object. However, due to t
 
 
 ### Queries
-The APIs also have query endpoints, so a user can provide query terms and receive annotations in that form. The `query` and `queryMany` methods are generic and rely on input of a key for the `biothings_clients` configuration for specification of which API to use. Just like the generic annotation methods, these methods can be used with an updated or customized configuration.
+The APIs also have query endpoints, so a user can provide query terms and receive annotations in that form. The `btQuery` method is generic and rely on input of a key for the `biothings_clients` or a `BioThings` object configuration for specification of which API to use. Just like the generic annotation methods, these methods can be used with an updated or customized configuration.
 
-#### Example: `query` and `queryMany`
+#### Example: `btQuery`
 
-`query`:
+`btQuery`:
 ```
-> query("sp2", "gene")
+> btQuery(gene_client, "sp2")
 [[1]]
 [[1]]$max_score
 [1] 457.1937
@@ -101,12 +101,12 @@ The APIs also have query endpoints, so a user can provide query terms and receiv
 ...(output trimmed)
 ```
 
-`queryMany`:
+`btQuery` for multiple ids:
 ```
 > genes <- c('1053_at', '117_at', '121_at', '1255_g_at', '1294_at')
-> # Notice how "gene" is the second argument in the queryMany function
-> queryMany(genes, "gene", scopes=c("symbol", "reporter", "accession"),
-            fields=c("entrezgene", "uniprot"), species='human', returnall=TRUE)
+> btQuery(gene_client, genes, scopes=c("symbol", "reporter", "accession"),
+        fields = c("entrezgene", "uniprot"), species = "human",
+        returnall = TRUE)
 Finished
 $response
 $response[[1]]
@@ -125,11 +125,12 @@ $response[[1]]$uniprot$`Swiss-Prot`
 ...(output trimmed)
 ```
 
-#### Example: Using `fetch_all`
+#### Example: Using `fetch_all` parameter
 Some queries return thousands of results. Use `fetch_all` to get all of them.
 
 ```
-> faquery <- query('_exists_:pdb', "gene", fetch_all = TRUE, fields = 'pdb')
+> faquery <- btQuery(gene_client, '_exists_:pdb', fetch_all = TRUE,
+                     fields = 'pdb')
 Getting additional records. Took: 536
 Getting additional records. Took: 484
 Getting additional records. Took: 301
@@ -153,9 +154,9 @@ List of 8176
 ```
 ### Metadata and Metadata Fields
 
-Users can also retrieve information about metadata for an API with `getMetadata`:
+Users can also retrieve information about metadata for an API with `btMetadata`:
 ```
-> getMetadata("gene")
+> btMetadata("gene") # Equivalent to btMetadata(gene_client)
 [[1]]
 [[1]]$source
 NULL
@@ -175,7 +176,7 @@ NULL
 ...(output trimmed)
 ```
 
-As well as metadata fields with `getFields`:
+As well as metadata fields with `btFields`:
 ```
-> getFields("gene") # Beware, produces a lot of output
+> btFields("gene") # Beware, produces a lot of output
 ```
