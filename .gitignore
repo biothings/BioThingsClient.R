@@ -3,6 +3,7 @@
 .Rapp.history
 .gitignore
 .travis.yml
+*.Rproj
 # Session Data files
 .RData
 # Example code in package build process
