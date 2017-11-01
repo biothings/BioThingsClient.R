@@ -5,22 +5,20 @@
 \alias{btFields}
 \alias{btFields,BioThings-method}
 \alias{btFields,BioThings,BioThings-method}
-\alias{btFields,missing-method}
+\alias{btFields,character-method}
 \alias{btFields,BioThings,BioThings-method}
 \title{btFields}
 \usage{
-btFields(client, ..., biothings)
+btFields(biothings, ...)
 
-\S4method{btFields}{BioThings}(client, ..., biothings)
+\S4method{btFields}{BioThings}(biothings, ...)
 
-\S4method{btFields}{missing}(client, ..., biothings)
+\S4method{btFields}{character}(biothings, ...)
 }
 \arguments{
-\item{client}{A biothings client name: gene, variant, taxon or chem}
+\item{biothings}{A BioThings class object}
 
 \item{...}{Additional API parameters. See API documentation.}
-
-\item{biothings}{A BioThings class object}
 }
 \value{
 A list of results from the metadata fields endpoint

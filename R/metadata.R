@@ -7,9 +7,8 @@
 #' @description
 #' Get metadata information from BioThings API metadata endpoints
 #'
-#' @param client A biothings client name: gene, variant, taxon or chem
-#' @param ... Additional API parameters. See API documentation.
 #' @param biothings A BioThings class object
+#' @param ... Additional API parameters. See API documentation.
 #'
 #' @return A list of results from the metadata endpoint
 #'
@@ -21,14 +20,14 @@
 #' metadata <- btMetadata("gene")
 #' head(metadata)
 setGeneric("btMetadata", signature = c("biothings"),
-           function(client, ..., biothings) {
+           function(biothings, ...) {
   standardGeneric("btMetadata")
 })
 
 #' @rdname btMetadata-methods
 #' @aliases btMetadata,BioThings,BioThings-method
 setMethod("btMetadata", c(biothings = "BioThings"),
-          function(client, ..., biothings) {
+          function(biothings, ...) {
   client_config <- slot(biothings, "client")
   params <- list(...)
   res <- .request.get(biothings, client_config$endpoints$metadata$path, params)
@@ -37,10 +36,10 @@ setMethod("btMetadata", c(biothings = "BioThings"),
 
 #' @rdname btMetadata-methods
 #' @aliases btMetadata,BioThings,BioThings-method
-setMethod("btMetadata", c(biothings = "missing"),
-          function(client, ..., biothings) {
-  biothings <- BioThings(client)
-  btMetadata(client, ..., biothings = biothings)
+setMethod("btMetadata", c(biothings = "character"),
+          function(biothings, ...) {
+  biothings <- BioThings(biothings)
+  btMetadata(biothings = biothings, ...)
 })
 
 # btFields ---------------------------------------------------------------
@@ -50,9 +49,8 @@ setMethod("btMetadata", c(biothings = "missing"),
 #' @description
 #' Get field metadata information from BioThings API field metadata endpoints
 #'
-#' @param client A biothings client name: gene, variant, taxon or chem
-#' @param ... Additional API parameters. See API documentation.
 #' @param biothings A BioThings class object
+#' @param ... Additional API parameters. See API documentation.
 #'
 #' @return A list of results from the metadata fields endpoint
 #'
@@ -64,14 +62,14 @@ setMethod("btMetadata", c(biothings = "missing"),
 #' fields <- btFields("gene")
 #' head(fields)
 setGeneric("btFields", signature = c("biothings"),
-           function(client, ..., biothings) {
+           function(biothings, ...) {
    standardGeneric("btFields")
 })
 
 #' @rdname btFields-methods
 #' @aliases btFields,BioThings,BioThings-method
 setMethod("btFields", c(biothings = "BioThings"),
-          function(client, ..., biothings) {
+          function(biothings, ...) {
   client_config <- slot(biothings, "client")
   params <- list(...)
   res <- .request.get(biothings, client_config$endpoints$metadata_fields$path,
@@ -81,8 +79,8 @@ setMethod("btFields", c(biothings = "BioThings"),
 
 #' @rdname btFields-methods
 #' @aliases btFields,BioThings,BioThings-method
-setMethod("btFields", c(biothings = "missing"),
-          function(client, ..., biothings) {
-  biothings <- BioThings(client)
-  btFields(client, ..., biothings = biothings)
+setMethod("btFields", c(biothings = "character"),
+          function(biothings, ...) {
+  biothings <- BioThings(biothings)
+  btFields(biothings = biothings, ...)
 })
