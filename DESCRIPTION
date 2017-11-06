@@ -1,6 +1,6 @@
-Package: biothings
+Package: biothings_client
 Type: Package
-Title: BioThings (https://github.com/biothings/biothings_client.R)
+Title: BioThings Client (https://github.com/biothings/biothings_client.R)
 Description: Provides access to Biothings APIs. See biothings.io for more
     information about APIs. User can provide a custom client configuration or
     use the provided configurations in the biothings_clients object. The default
