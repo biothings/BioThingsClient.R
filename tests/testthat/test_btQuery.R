@@ -1,6 +1,6 @@
 context("Test btQuery")
 
-biothings <- BioThings("gene")
+biothings <- BioThingsClient("gene")
 
 test_that("Check that btQuery returns the appropriate types", {
   gene_btQuery <- btQuery(biothings, "CDK2")

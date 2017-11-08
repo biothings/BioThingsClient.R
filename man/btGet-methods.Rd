@@ -3,14 +3,14 @@
 \docType{methods}
 \name{btGet}
 \alias{btGet}
-\alias{btGet,BioThings-method}
+\alias{btGet,BioThingsClient-method}
 \alias{btGet,character-method}
 \alias{btGet,missing-method}
 \title{Get items from BioThings APIs}
 \usage{
 btGet(biothings, ids, fields, ..., return.as = "records")
 
-\S4method{btGet}{BioThings}(biothings, ids, fields, ...,
+\S4method{btGet}{BioThingsClient}(biothings, ids, fields, ...,
   return.as = "records")
 
 \S4method{btGet}{character}(biothings, ids, fields, ...,

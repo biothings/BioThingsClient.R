@@ -1,6 +1,6 @@
 context("Test btGet")
 
-biothings <- BioThings("gene")
+biothings <- BioThingsClient("gene")
 
 fields <- c("symbol", "name", "taxid", "entrezgene")
 genes <- c("1017","1018","ENSG00000148795")

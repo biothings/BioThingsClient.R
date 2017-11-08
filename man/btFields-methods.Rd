@@ -3,7 +3,7 @@
 \docType{methods}
 \name{btFields}
 \alias{btFields}
-\alias{btFields,BioThings-method}
+\alias{btFields,BioThingsClient-method}
 \alias{btFields,BioThings,BioThings-method}
 \alias{btFields,character-method}
 \alias{btFields,BioThings,BioThings-method}
@@ -11,7 +11,7 @@
 \usage{
 btFields(biothings, ...)
 
-\S4method{btFields}{BioThings}(biothings, ...)
+\S4method{btFields}{BioThingsClient}(biothings, ...)
 
 \S4method{btFields}{character}(biothings, ...)
 }

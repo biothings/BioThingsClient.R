@@ -1,4 +1,4 @@
-#' @include BioThings.R
+#' @include BioThingsClient.R
 
 # btGet ----------------------------------------------------------------
 
@@ -31,7 +31,7 @@ setGeneric("btGet", signature = c("biothings"),
 })
 
 #' @rdname btGet-methods
-setMethod("btGet", signature = c(biothings = "BioThings"),
+setMethod("btGet", signature = c(biothings = "BioThingsClient"),
           function(biothings, ids, fields, ..., return.as = "records") {
   params <- list(...)
   if (!missing(fields))
@@ -41,8 +41,7 @@ setMethod("btGet", signature = c(biothings = "BioThings"),
             "Defaulting to 'records'")
     return.as <- "records"
   }
-  if (is.character(biothings))
-    biothings <- BioThings(biothings)
+
   client_config <- slot(biothings, "client")
   if (length(ids) == 1) {
     res <- .request.get(biothings,
@@ -62,7 +61,7 @@ setMethod("btGet", signature = c(biothings = "BioThings"),
 #' @rdname btGet-methods
 setMethod("btGet", signature = c(biothings = "character"),
           function(biothings, ids, fields, ..., return.as = "records") {
-  biothings <- BioThings(biothings)
+  biothings <- BioThingsClient(biothings)
   btGet(biothings, ids = ids, fields = fields, ..., return.as = return.as)
 })
 
@@ -73,7 +72,7 @@ setMethod("btGet", c(biothings = "missing"),
   message("Available clients:")
   message(paste(names(biothings_clients), collapse = "\n"))
   client <- readline("Enter a client name: ")
-  btclient <- BioThings(client = biothings_clients[[client]])
+  btclient <- BioThingsClient(client = biothings_clients[[client]])
   btGet(biothings = btclient, ids = ids, fields = fields, ...,
         return.as = return.as)
 })

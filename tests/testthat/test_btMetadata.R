@@ -1,6 +1,6 @@
 context("Test metadata methods")
 
-biothings <- BioThings("gene")
+biothings <-  BioThingsClient("gene")
 
 test_that("Verify getMetadata returns appropriate result", {
   metadata <- btMetadata("gene")

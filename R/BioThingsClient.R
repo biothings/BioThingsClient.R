@@ -1,33 +1,53 @@
 #' @include utils.R
-#' @include biothings_client.R
+
+#' @importFrom magrittr %>%
+#' @importFrom utils capture.output
+#' @importFrom methods is
+#' @importFrom methods new
+#' @importFrom methods slot
+#' @importFrom stats setNames
+#' @importFrom methods slot<-
+#' @import httr
+#' @import stats
+#' @import utils
+NULL
 
 btversion <- '0.1'
 
-#' @title BioThings
+#' @title BioThingsClient
 #'
 #' @description An S4 Class to access BioThings APIs.
 #'
+#' \href{http://biothings.io/}{BioThings} APIs:
+#' \itemize{
+#'   \item \href{http://mygene.info/}{MyGene}
+#'   \item \href{http://myvariant.info/}{MyVariant}
+#'   \item \href{http://t.biothings.io/}{MyTaxon}
+#'   \item \href{http://mychem.info/}{MyChem}
+#'   ...
+#' }
 #' @slot client A client configuration list.
 #' @slot version The version of the BioThings package.
 #' @slot verbose logical.
 #' @slot debug logical.
 #'
 #' @return An S4 class object of the class Biothings.
-#' @export BioThings
-#' @exportClass BioThings
-#' @name BioThings-class
-#' @rdname BioThings-class
+#' @export BioThingsClient
+#' @exportClass BioThingsClient
+#' @name BioThingsClient-class
+#' @rdname BioThingsClient-class
 #'
 #' @examples
-#' biothings <- BioThings("gene")
+#' biothings <- BioThingsClient("gene")
 #' slot(biothings, "verbose") <- FALSE # default is TRUE
 #' biothings
-BioThings <- setClass("BioThings",
-                      slots = list(client = "list", version = "character",
-                                   verbose = "logical", debug = "logical"))
+BioThingsClient <- setClass("BioThingsClient",
+                            slots = list(client = "list", version = "character",
+                                         verbose = "logical",
+                                         debug = "logical"))
 
 #' @keywords internal
-validBiothingsObject <- function(object) {
+validBioThingsObject <- function(object) {
   errors <- character(0)
   for (sn in c("delay", "step")) {
     if (length(slot(object, sn)) != 1)
@@ -47,11 +67,11 @@ validBiothingsObject <- function(object) {
   }
 }
 
-setValidity("BioThings", validBiothingsObject)
+setValidity("BioThingsClient", validBioThingsObject)
 
 #' @keywords internal
 setMethod("initialize",
-          signature = "BioThings",
+          signature = "BioThingsClient",
           function(.Object, client, version = version,
                    verbose = TRUE, debug = FALSE) {
   if (is.character(client))
@@ -75,7 +95,7 @@ setGeneric(".request.get", signature = c("biothings"),
 })
 
 #' @keywords internal
-setMethod(".request.get", c(biothings = "BioThings"),
+setMethod(".request.get", c(biothings = "BioThingsClient"),
           function(biothings, path, params = list()) {
   client_config <- slot(biothings, "client")
 
@@ -105,7 +125,7 @@ setGeneric(".request.post", signature = c("biothings"),
 })
 
 #' @keywords internal
-setMethod(".request.post", c(biothings = "BioThings"),
+setMethod(".request.post", c(biothings = "BioThingsClient"),
           function(biothings, path, params = list()) {
   client_config <- slot(biothings, "client")
 

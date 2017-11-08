@@ -15,7 +15,7 @@ gene_dev_config = list(
 )
 
 
-biothings <- BioThings(gene_dev_config)
+biothings <- BioThingsClient(gene_dev_config)
 
 fields <- c("symbol", "name", "taxid", "entrezgene")
 genes <- c("1017", "1018", "ENSG00000148795")

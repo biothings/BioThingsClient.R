@@ -1,4 +1,4 @@
-Package: biothings_client
+Package: BioThingsClient
 Type: Package
 Title: BioThings Client (https://github.com/biothings/biothings_client.R)
 Description: Provides access to Biothings APIs. See biothings.io for more
@@ -30,10 +30,9 @@ Suggests:
     rmarkdown
 Roxygen: list(wrap = FALSE)
 Collate: 
-    'biothings_client.R'
-    'biothings-package.R'
     'utils.R'
-    'BioThings.R'
+    'BioThingsClient.R'
+    'biothings_clients.R'
     'get.R'
     'metadata.R'
     'query.R'

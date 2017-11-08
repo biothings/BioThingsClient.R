@@ -1,4 +1,4 @@
-# `biothings`
+# `BioThingsClient`
 [![Travis-CI Build Status](https://travis-ci.org/biothings/biothings_client.R.svg?branch=master)](https://travis-ci.org/biothings/biothings_client.R)
 
 This is an R package that provides access to the [BioThings APIs](biothings.io):
@@ -12,7 +12,7 @@ As new APIs are added, this package will be updated to provide access to them. I
 ## Usage
 The package is intended to be simple to use, without the need to instantiate a class object (though you can! Particularly if you have an updated API configuration). For a given API and relevant id, the user can make requests from the API as follows:
 ```
-gene_client <- BioThings("gene")
+gene_client <- BioThingsClient("gene")
 btGet(gene_client, "1017")
 # or:
 btGet("gene", "1017")

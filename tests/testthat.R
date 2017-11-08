@@ -1,3 +1,3 @@
 library(testthat)
-library(biothings)
-test_check("biothings")
+library(BioThingsClient)
+test_check("BioThingsClient")

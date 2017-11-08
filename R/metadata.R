@@ -1,4 +1,4 @@
-#' @include BioThings.R
+#' @include BioThingsClient.R
 
 # btMetadata -------------------------------------------------------------
 
@@ -26,7 +26,7 @@ setGeneric("btMetadata", signature = c("biothings"),
 
 #' @rdname btMetadata-methods
 #' @aliases btMetadata,BioThings,BioThings-method
-setMethod("btMetadata", c(biothings = "BioThings"),
+setMethod("btMetadata", c(biothings = "BioThingsClient"),
           function(biothings, ...) {
   client_config <- slot(biothings, "client")
   params <- list(...)
@@ -38,7 +38,7 @@ setMethod("btMetadata", c(biothings = "BioThings"),
 #' @aliases btMetadata,BioThings,BioThings-method
 setMethod("btMetadata", c(biothings = "character"),
           function(biothings, ...) {
-  biothings <- BioThings(biothings)
+  biothings <- BioThingsClient(biothings)
   btMetadata(biothings = biothings, ...)
 })
 
@@ -68,7 +68,7 @@ setGeneric("btFields", signature = c("biothings"),
 
 #' @rdname btFields-methods
 #' @aliases btFields,BioThings,BioThings-method
-setMethod("btFields", c(biothings = "BioThings"),
+setMethod("btFields", c(biothings = "BioThingsClient"),
           function(biothings, ...) {
   client_config <- slot(biothings, "client")
   params <- list(...)
@@ -81,6 +81,6 @@ setMethod("btFields", c(biothings = "BioThings"),
 #' @aliases btFields,BioThings,BioThings-method
 setMethod("btFields", c(biothings = "character"),
           function(biothings, ...) {
-  biothings <- BioThings(biothings)
+  biothings <- BioThingsClient(biothings)
   btFields(biothings = biothings, ...)
 })

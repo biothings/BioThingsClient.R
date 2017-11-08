@@ -1,5 +1,3 @@
-#' @include biothings-package.R
-
 #' @keywords internal
 .collapse <- function(...) {
     paste(unlist(list(...)), sep = ",", collapse = ",")

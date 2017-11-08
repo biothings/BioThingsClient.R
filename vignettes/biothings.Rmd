@@ -1,6 +1,6 @@
 ---
-title: "biothings Package"
-author: "Thmas Johnson"
+title: "BioThingsClient Package"
+author: "Thomas Johnson"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -21,11 +21,11 @@ Each API (gene, taxon, variant and chemical - when this was written) has a set o
 
 
 #### Example: `btGet`
-These methods can be used with a defined `BioThings` class object or with just the name of a client from the `biothings_clients` object.
+These methods can be used with a defined `BioThingsClient` class object or with just the name of a client from the `biothings_clients` object.
 
 With a defined `BioThings` object (see next example for output):
 ```
-> gene_client <- BioThings("gene")
+> gene_client <- BioThingsClient("gene")
 > # Suppress messages
 > slot(gene_client, "verbose") <- FALSE
 > btGet(gene_client, "1017")

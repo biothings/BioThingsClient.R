@@ -3,15 +3,15 @@
 \docType{methods}
 \name{btQuery}
 \alias{btQuery}
-\alias{btQuery,BioThings-method}
+\alias{btQuery,BioThingsClient-method}
 \alias{btQuery,missing-method}
 \alias{btQuery,character-method}
 \title{btQuery}
 \usage{
 btQuery(biothings, q, ..., fetch_all = FALSE, scopes, return.as = "records")
 
-\S4method{btQuery}{BioThings}(biothings, q, ..., fetch_all = FALSE, scopes,
-  return.as = "records")
+\S4method{btQuery}{BioThingsClient}(biothings, q, ..., fetch_all = FALSE,
+  scopes, return.as = "records")
 
 \S4method{btQuery}{missing}(biothings, q, ..., fetch_all = FALSE, scopes,
   return.as = "records")
@@ -41,6 +41,6 @@ Retrieve results from the query endpoint of BioThings APIs
 }
 \examples{
 btQuery("gene", q = "NM_013993")
-gene_client <- BioThings("gene")
+gene_client <- BioThingsClient("gene")
 btQuery(gene_client, "NM_013993")
 }

@@ -3,7 +3,7 @@
 \docType{methods}
 \name{btMetadata}
 \alias{btMetadata}
-\alias{btMetadata,BioThings-method}
+\alias{btMetadata,BioThingsClient-method}
 \alias{btMetadata,BioThings,BioThings-method}
 \alias{btMetadata,character-method}
 \alias{btMetadata,BioThings,BioThings-method}
@@ -11,7 +11,7 @@
 \usage{
 btMetadata(biothings, ...)
 
-\S4method{btMetadata}{BioThings}(biothings, ...)
+\S4method{btMetadata}{BioThingsClient}(biothings, ...)
 
 \S4method{btMetadata}{character}(biothings, ...)
 }

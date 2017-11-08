@@ -1,4 +1,4 @@
-#' @include BioThings.R
+#' @include BioThingsClient.R
 
 #' @title btQuery
 #'
@@ -20,7 +20,7 @@
 #'
 #' @examples
 #' btQuery("gene", q = "NM_013993")
-#' gene_client <- BioThings("gene")
+#' gene_client <- BioThingsClient("gene")
 #' btQuery(gene_client, "NM_013993")
 setGeneric("btQuery", signature = c("biothings"),
            function(biothings, q, ..., fetch_all = FALSE, scopes,
@@ -29,7 +29,7 @@ setGeneric("btQuery", signature = c("biothings"),
 })
 
 #' @rdname btQuery-methods
-setMethod("btQuery", c(biothings = "BioThings"),
+setMethod("btQuery", c(biothings = "BioThingsClient"),
           function(biothings, q, ..., fetch_all = FALSE, scopes,
                    return.as = "records") {
   if (!(return.as %in% c("records", "data.frame", "text"))) {
@@ -37,8 +37,7 @@ setMethod("btQuery", c(biothings = "BioThings"),
             "Defaulting to 'records'")
     return.as <- "records"
   }
-  if (is.character(biothings))
-    biothings <- BioThings(biothings)
+
   client_config <- slot(biothings, "client")
   params <- list(...)
   if (length(q) == 1) {
@@ -102,7 +101,7 @@ setMethod("btQuery", c(biothings = "missing"),
   message("Available clients:")
   message(paste(names(biothings_clients), collapse = "\n"))
   client <- readline("Enter a client name: ")
-  btclient <- BioThings(client = biothings_clients[[client]])
+  btclient <- BioThingsClient(client = biothings_clients[[client]])
   btQuery(biothings, q, client, ..., fetch_all = fetch_all,
           return.as = return.as)
 })
@@ -111,7 +110,7 @@ setMethod("btQuery", c(biothings = "missing"),
 setMethod("btQuery", c(biothings = "character"),
           function(biothings, q, ...,  fetch_all, scopes,
                    return.as = "records") {
-  biothings <- BioThings(biothings)
+  biothings <- BioThingsClient(biothings)
   btQuery(biothings, q, ..., fetch_all = fetch_all,
           return.as = return.as)
 })
@@ -126,7 +125,7 @@ setGeneric("queryMany", signature = c("biothings"),
 })
 
 #' @keywords internal
-setMethod("queryMany", c(biothings = "BioThings"),
+setMethod("queryMany", c(biothings = "BioThingsClient"),
           function(biothings, qterms, scopes = NULL, ...,
                    return.as = "records") {
   if (!(return.as %in% c("records", "data.frame", "text"))) {
@@ -196,7 +195,7 @@ setMethod("queryMany", c(biothings = "missing"),
   message("Available clients:")
   message(paste(names(biothings_clients), collapse = "\n"))
   client <- readline("Enter a client name: ")
-  btclient <- BioThings(client = biothings_clients[[client]])
+  btclient <- BioThingsClient(client = biothings_clients[[client]])
   # Should use callGeneric here except that callGeneric gets the variable
   # scoping wrong for the "..." argument
   queryMany(biothings, qterms, scopes, ..., return.as = return.as)
