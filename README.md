@@ -1,5 +1,5 @@
 # `BioThingsClient`
-[![Travis-CI Build Status](https://travis-ci.org/biothings/biothings_client.R.svg?branch=master)](https://travis-ci.org/biothings/biothings_client.R)
+[![Travis-CI Build Status](https://travis-ci.org/biothings/BioThingsClient.R.svg?branch=master)](https://travis-ci.org/biothings/biothings_client.R)
 
 This is an R package that provides access to the [BioThings APIs](biothings.io):
 * [Chemicals](http://mychem.info/)
