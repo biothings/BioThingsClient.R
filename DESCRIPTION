@@ -1,11 +1,11 @@
-Package: BioThingsClient
+Package:  BioThingsClient.R
 Type: Package
-Title: BioThings Client (https://github.com/biothings/biothings_client.R)
+Title: BioThings Client (https://github.com/biothings/ BioThingsClient.R)
 Description: Provides access to Biothings APIs. See biothings.io for more
     information about APIs. User can provide a custom client configuration or
     use the provided configurations in the biothings_clients object. The default
     configuration provides access to the gene, variant, chemical and taxon APIs.
-Version: 0.99.0
+Version: 0.99.1
 Author: Thomas Johnson <thomascjohnson@gmail.com>
 Maintainer: Thomas Johnson <thomascjohnson@gmail.com>
 Authors@R: c(person("Thomas", "Johnson",
