@@ -1,10 +1,12 @@
 Package:  BioThingsClient.R
 Type: Package
-Title: BioThings Client (https://github.com/biothings/ BioThingsClient.R)
-Description: Provides access to Biothings APIs. See biothings.io for more
-    information about APIs. User can provide a custom client configuration or
-    use the provided configurations in the biothings_clients object. The default
-    configuration provides access to the gene, variant, chemical and taxon APIs.
+Title: BioThings Client (https://github.com/biothings/BioThingsClient.R)
+Description: This is a unified R client for all "BioThings APIs" (more at http://biothings.io). 
+    BioThings APIs are a collection of high-performance APIs for variety of aggregated entity-type
+    specific annotations, such as genes, variants, chemicals, drugs etc. (so  called "BioThings").
+    It also provides a SDK (BioThings SDK) for users to build their own BioThings API for any biological
+    entity types. This client provides a generic R library for existing BioThings APIs as well as the new
+    BioThings APIs will be created in the future, either by us or users.
 Version: 0.99.1
 Author: Thomas Johnson <thomascjohnson@gmail.com>
 Maintainer: Thomas Johnson <thomascjohnson@gmail.com>
