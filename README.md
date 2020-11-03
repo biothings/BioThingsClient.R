@@ -29,7 +29,7 @@ btGet(gene_client, "1017")
 # or:
 btGet("gene", "1017")
 # or:
-btGet("gene", "c("9606", "10030")")
+btGet("gene", c("9606", "10030"))
 ```
 
 ### Accessing the Taxonomy API
@@ -61,9 +61,9 @@ biothings_clients
 
 ### Accessing endpoints of the APIs with the query method:
 ```r
-btQuery("chem", "drugbank.name:celecoxib")
+btQuery(chem_client, "drugbank.name:celecoxib")
 
-btQuery("variant", c("rs58991260", "rs2500"))
+btQuery(variant_client, c("rs58991260", "rs2500"))
 ```
 
 ## Existing Issues
